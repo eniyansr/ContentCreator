@@ -24,7 +24,7 @@ app.get('/api/db-test', async (c) => {
   }
 })
 
-// Temporary fallback
-app.get('/*', (c) => c.text('CreatorAI Cloudflare Worker is running!'))
+// Redirect root to login
+app.get('/', (c) => c.redirect('/login.html'))
 
 export default app
