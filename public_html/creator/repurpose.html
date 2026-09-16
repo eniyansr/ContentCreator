@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Content Repurposer – CreatorAI</title>
+    <link rel="stylesheet" href="/css/global.css">
+    <link rel="stylesheet" href="/css/dashboard.css">
+    <link rel="stylesheet" href="/css/repurpose.css">
+</head>
+<body>
+<div class="app-layout">
+    <!-- Sidebar -->
+    <aside class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <a href="/creator/dashboard.html" class="sidebar-logo"><div class="sidebar-logo-icon">✦</div>CreatorAI</a>
+        </div>
+        <nav class="sidebar-nav">
+            <div class="sidebar-section">
+                <a href="/creator/dashboard.html" class="sidebar-link"><span class="sidebar-link-icon">📊</span> Dashboard</a>
+                <a href="/creator/chat.html" class="sidebar-link"><span class="sidebar-link-icon">💬</span> AI Creator Chat</a>
+                <a href="/creator/ideas.html" class="sidebar-link"><span class="sidebar-link-icon">💡</span> Content Ideas</a>
+                <a href="/creator/content-generator.html" class="sidebar-link"><span class="sidebar-link-icon">✍️</span> Generate Content</a>
+                <a href="/creator/repurpose.html" class="sidebar-link active"><span class="sidebar-link-icon">🔄</span> Repurpose</a>
+                <a href="/creator/analyzer.html" class="sidebar-link"><span class="sidebar-link-icon">🔍</span> Content Analyzer</a>
+            </div>
+            <div class="sidebar-section">
+                <div class="sidebar-section-title">Manage</div>
+                <a href="/creator/analytics.html" class="sidebar-link"><span class="sidebar-link-icon">📈</span> Analytics</a>
+                <a href="/creator/calendar.html" class="sidebar-link"><span class="sidebar-link-icon">📅</span> Calendar</a>
+                <a href="/creator/library.html" class="sidebar-link"><span class="sidebar-link-icon">📚</span> Saved Content</a>
+                <a href="/creator/templates.html" class="sidebar-link"><span class="sidebar-link-icon">📋</span> Templates</a>
+            </div>
+            <div class="sidebar-section">
+                <div class="sidebar-section-title">Settings</div>
+                <a href="/creator/profile.html" class="sidebar-link"><span class="sidebar-link-icon">👤</span> My Profile</a>
+                <a href="/creator/notifications.html" class="sidebar-link"><span class="sidebar-link-icon">🔔</span> Notifications</a>
+            </div>
+        </nav>
+        <div class="sidebar-footer">
+            <div class="sidebar-user">
+                <div class="avatar avatar-sm" id="userAvatar">?</div>
+                <div class="sidebar-user-info">
+                    <div class="sidebar-user-name" id="userNameSidebar">Loading...</div>
+                    <div class="sidebar-user-role">Creator</div>
+                </div>
+            </div>
+            <button class="btn btn-sm btn-outline" style="width: 100%; margin-top: var(--space-2); border-color: var(--border-color); color: var(--text-muted);" onclick="logout()">Logout</button>
+        </div>
+    </aside>
+
+    <main class="main-content">
+        <header class="top-header">
+            <div class="top-header-left">
+                <button class="menu-toggle" onclick="toggleSidebar()">☰</button>
+                <h2 class="page-title">Repurpose Content</h2>
+            </div>
+        </header>
+
+        <div class="page-content">
+            <div class="repurpose-layout">
+                
+                <!-- Source Panel -->
+                <div class="repurpose-source-panel">
+                    <div class="repurpose-panel-header">
+                        <div class="repurpose-panel-title">📝 Source Content</div>
+                        <button class="btn btn-ghost btn-sm" onclick="document.getElementById('sourceContent').value=''">Clear</button>
+                    </div>
+                    
+                    <div class="repurpose-source-body">
+                        <div style="flex: 1; display: flex; flex-direction: column;">
+                            <label class="form-label">Paste your original content (e.g., YouTube Script, Blog Post)</label>
+                            <textarea id="sourceContent" class="repurpose-textarea" placeholder="Paste the content you want to repurpose here..."></textarea>
+                        </div>
+                        
+                        <div>
+                            <label class="form-label mt-4">Select target platforms (Max 5)</label>
+                            <div class="platform-checkboxes">
+                                <label class="platform-checkbox-card">
+                                    <input type="checkbox" name="target_platforms" value="X/Twitter Thread" style="display: none;" onchange="togglePlatformSelection(this)">
+                                    <span style="font-size: 1.2rem;">🐦</span>
+                                    <span style="font-size: var(--font-size-xs); font-weight: 600;">X/Twitter Thread</span>
+                                </label>
+                                <label class="platform-checkbox-card">
+                                    <input type="checkbox" name="target_platforms" value="LinkedIn Post" style="display: none;" onchange="togglePlatformSelection(this)">
+                                    <span style="font-size: 1.2rem;">💼</span>
+                                    <span style="font-size: var(--font-size-xs); font-weight: 600;">LinkedIn Post</span>
+                                </label>
+                                <label class="platform-checkbox-card">
+                                    <input type="checkbox" name="target_platforms" value="Instagram Caption" style="display: none;" onchange="togglePlatformSelection(this)">
+                                    <span style="font-size: 1.2rem;">📸</span>
+                                    <span style="font-size: var(--font-size-xs); font-weight: 600;">Instagram Caption</span>
+                                </label>
+                                <label class="platform-checkbox-card">
+                                    <input type="checkbox" name="target_platforms" value="TikTok Script" style="display: none;" onchange="togglePlatformSelection(this)">
+                                    <span style="font-size: 1.2rem;">🎵</span>
+                                    <span style="font-size: var(--font-size-xs); font-weight: 600;">TikTok Script</span>
+                                </label>
+                                <label class="platform-checkbox-card">
+                                    <input type="checkbox" name="target_platforms" value="YouTube Community Post" style="display: none;" onchange="togglePlatformSelection(this)">
+                                    <span style="font-size: 1.2rem;">📺</span>
+                                    <span style="font-size: var(--font-size-xs); font-weight: 600;">YouTube Community Post</span>
+                                </label>
+                                <label class="platform-checkbox-card">
+                                    <input type="checkbox" name="target_platforms" value="Newsletter/Blog Intro" style="display: none;" onchange="togglePlatformSelection(this)">
+                                    <span style="font-size: 1.2rem;">✉️</span>
+                                    <span style="font-size: var(--font-size-xs); font-weight: 600;">Newsletter/Blog Intro</span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div style="padding: var(--space-4); background: var(--bg-tertiary); border-top: 1px solid var(--border-light);">
+                        <button class="btn btn-primary w-full" id="repurposeBtn" onclick="repurposeContent()">
+                            🔄 Repurpose Content
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Results Panel -->
+                <div class="repurpose-results-panel">
+                    <div class="repurpose-panel-header">
+                        <div class="repurpose-panel-title">✨ Generated Content</div>
+                    </div>
+                    
+                    <div class="repurpose-results-body">
+                        
+                        <!-- Empty State -->
+                        <div class="repurpose-empty" id="resultsEmpty">
+                            <div class="repurpose-empty-icon">🪄</div>
+                            <h3 style="color: var(--text-primary); margin-bottom: var(--space-2);">Multiply Your Content</h3>
+                            <p style="color: var(--text-secondary); font-size: var(--font-size-sm);">Paste a script on the left, select your platforms, and watch AI instantly create native posts for all of them.</p>
+                        </div>
+                        
+                        <!-- Loading State -->
+                        <div class="repurpose-loading hidden" id="resultsLoading">
+                            <div class="loading-spinner"></div>
+                            <p style="color: var(--primary-light); font-weight: 600; margin-top: var(--space-4);">Adapting content to selected platforms...</p>
+                        </div>
+                        
+                        <!-- Results Container -->
+                        <div id="resultsContainer" class="hidden">
+                            <!-- Populated via JS -->
+                        </div>
+                        
+                    </div>
+                </div>
+                
+            </div>
+        </div>
+    </main>
+</div>
+
+<script src="/js/utils.js"></script>
+<script>
+    const token = localStorage.getItem('token');
+    if (!token) window.location.href = '/login.html';
+
+    document.addEventListener('DOMContentLoaded', async () => {
+        await loadUserData();
+    });
+
+    function toggleSidebar() {
+        document.getElementById('sidebar').classList.toggle('open');
+    }
+
+    async function loadUserData() {
+        try {
+            const res = await fetch('/api/creator/dashboard', { headers: { 'Authorization': `Bearer ${token}` } });
+            const data = await res.json();
+            if (data.success && data.data) {
+                const name = data.data.display_name || 'Creator';
+                document.getElementById('userNameSidebar').textContent = name;
+                document.getElementById('userAvatar').textContent = name.charAt(0).toUpperCase();
+            } else if (res.status === 401) logout();
+        } catch(e) {}
+    }
+
+    function togglePlatformSelection(checkbox) {
+        const card = checkbox.closest('.platform-checkbox-card');
+        if (checkbox.checked) {
+            card.classList.add('selected');
+        } else {
+            card.classList.remove('selected');
+        }
+    }
+
+    async function repurposeContent() {
+        const content = document.getElementById('sourceContent').value.trim();
+        if (!content) {
+            Utils.toast('Please paste your source content first.', 'error');
+            return;
+        }
+
+        const selectedCheckboxes = document.querySelectorAll('input[name="target_platforms"]:checked');
+        const platforms = Array.from(selectedCheckboxes).map(cb => cb.value);
+
+        if (platforms.length === 0) {
+            Utils.toast('Please select at least one target platform.', 'error');
+            return;
+        }
+        if (platforms.length > 5) {
+            Utils.toast('Please select a maximum of 5 platforms.', 'error');
+            return;
+        }
+
+        const btn = document.getElementById('repurposeBtn');
+        
+        // UI State
+        Utils.btnLoading(btn, true);
+        document.getElementById('resultsEmpty').classList.add('hidden');
+        document.getElementById('resultsContainer').classList.add('hidden');
+        document.getElementById('resultsLoading').classList.remove('hidden');
+        document.getElementById('resultsContainer').innerHTML = '';
+
+        try {
+            const res = await fetch('/api/ai/repurpose', {
+                method: 'POST',
+                headers: { 'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    content: content,
+                    platforms: platforms
+                })
+            });
+            const result = await res.json();
+
+            if (result.success && result.data && result.data.results) {
+                renderResults(result.data.results);
+            } else {
+                if (res.status === 401) logout();
+                throw new Error(result.error || 'Failed to repurpose');
+            }
+        } catch (error) {
+            Utils.toast(error.message, 'error');
+            document.getElementById('resultsLoading').classList.add('hidden');
+            document.getElementById('resultsEmpty').classList.remove('hidden');
+        }
+
+        Utils.btnLoading(btn, false);
+    }
+
+    function renderResults(resultsData) {
+        document.getElementById('resultsLoading').classList.add('hidden');
+        const container = document.getElementById('resultsContainer');
+        container.classList.remove('hidden');
+
+        // Loop through results object
+        for (const [platform, content] of Object.entries(resultsData)) {
+            // Find emoji for platform
+            const card = Array.from(document.querySelectorAll('.platform-checkbox-card')).find(c => c.querySelector('input').value === platform);
+            const emoji = card ? card.querySelector('span').textContent : '📱';
+            
+            const contentHtml = Utils.markdownToHtml(content);
+            const rawContent = Utils.escapeHtml(content);
+
+            const div = document.createElement('div');
+            div.className = 'repurposed-item animate-in';
+            div.innerHTML = `
+                <div class="repurposed-header">
+                    <div class="repurposed-platform">${emoji} ${platform}</div>
+                    <div style="display: flex; gap: 8px;">
+                        <button class="btn btn-ghost btn-sm" onclick="Utils.copyToClipboard(this.closest('.repurposed-item').querySelector('.raw-content').value)">📋 Copy</button>
+                        <button class="btn btn-primary btn-sm" onclick="saveRepurposedContent(this, '${platform}', this.closest('.repurposed-item').querySelector('.raw-content').value)">💾 Save</button>
+                    </div>
+                </div>
+                <div class="repurposed-content">
+                    ${contentHtml}
+                    <textarea class="raw-content" style="display:none;">${rawContent}</textarea>
+                </div>
+            `;
+            container.appendChild(div);
+        }
+    }
+    
+    async function saveRepurposedContent(btn, platform, content) {
+        const parser = new DOMParser();
+        const unescapedStr = parser.parseFromString(content, 'text/html').documentElement.textContent;
+        
+        Utils.btnLoading(btn, true);
+        
+        try {
+            const res = await fetch('/api/management/content/save', {
+                method: 'POST',
+                headers: { 'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    title: `${platform} Repurposed Post`,
+                    content: unescapedStr,
+                    content_type: 'repurposed',
+                    platform: platform
+                })
+            });
+            const result = await res.json();
+            
+            if (result.success) {
+                Utils.toast('Saved to library!', 'success');
+                btn.innerHTML = '✓ Saved';
+                btn.className = 'btn btn-success btn-sm';
+                btn.disabled = true;
+            } else {
+                throw new Error(result.error);
+            }
+        } catch (error) {
+            Utils.toast(error.message || 'Failed to save', 'error');
+            Utils.btnLoading(btn, false);
+        }
+    }
+</script>
+</body>
+</html>

@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Chat – CreatorAI</title>
+    <link rel="stylesheet" href="/css/global.css">
+    <link rel="stylesheet" href="/css/dashboard.css">
+    <link rel="stylesheet" href="/css/chat.css">
+    <link rel="stylesheet" href="/css/responsive.css">
+</head>
+<body>
+<div class="app-layout">
+    <!-- Sidebar -->
+    <aside class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <a href="/creator/dashboard.html" class="sidebar-logo">
+                <div class="sidebar-logo-icon">✦</div>
+                CreatorAI
+            </a>
+        </div>
+        <nav class="sidebar-nav">
+            <div class="sidebar-section">
+                <a href="/creator/dashboard.html" class="sidebar-link"><span class="sidebar-link-icon">📊</span> Dashboard</a>
+                <a href="/creator/chat.html" class="sidebar-link active"><span class="sidebar-link-icon">💬</span> AI Creator Chat</a>
+                <a href="/creator/ideas.html" class="sidebar-link"><span class="sidebar-link-icon">💡</span> Content Ideas</a>
+                <a href="/creator/content-generator.html" class="sidebar-link"><span class="sidebar-link-icon">✍️</span> Generate Content</a>
+                <a href="/creator/repurpose.html" class="sidebar-link"><span class="sidebar-link-icon">🔄</span> Repurpose</a>
+                <a href="/creator/analyzer.html" class="sidebar-link"><span class="sidebar-link-icon">🔍</span> Content Analyzer</a>
+            </div>
+            <div class="sidebar-section">
+                <div class="sidebar-section-title">Manage</div>
+                <a href="/creator/analytics.html" class="sidebar-link"><span class="sidebar-link-icon">📈</span> Analytics</a>
+                <a href="/creator/calendar.html" class="sidebar-link"><span class="sidebar-link-icon">📅</span> Calendar</a>
+                <a href="/creator/library.html" class="sidebar-link"><span class="sidebar-link-icon">📚</span> Saved Content</a>
+                <a href="/creator/templates.html" class="sidebar-link"><span class="sidebar-link-icon">📋</span> Templates</a>
+            </div>
+            <div class="sidebar-section">
+                <div class="sidebar-section-title">Settings</div>
+                <a href="/creator/profile.html" class="sidebar-link"><span class="sidebar-link-icon">👤</span> My Profile</a>
+                <a href="/creator/notifications.html" class="sidebar-link"><span class="sidebar-link-icon">🔔</span> Notifications</a>
+            </div>
+        </nav>
+        <div class="sidebar-footer">
+            <div class="sidebar-user">
+                <div class="avatar avatar-sm" id="userAvatar">?</div>
+                <div class="sidebar-user-info">
+                    <div class="sidebar-user-name" id="userNameSidebar">Loading...</div>
+                    <div class="sidebar-user-role">Creator</div>
+                </div>
+            </div>
+            <button class="btn btn-sm btn-outline" style="width: 100%; margin-top: var(--space-2); border-color: var(--border-color); color: var(--text-muted);" onclick="logout()">Logout</button>
+        </div>
+    </aside>
+    <div class="sidebar-overlay" id="sidebarOverlay" onclick="toggleSidebar()"></div>
+
+    <main class="main-content" style="display: flex; flex-direction: column;">
+        <header class="top-header">
+            <div class="top-header-left">
+                <button class="menu-toggle" onclick="toggleSidebar()">☰</button>
+                <h2 class="page-title">AI Creator Chat</h2>
+            </div>
+        </header>
+
+        <div class="chat-layout">
+            <!-- Chat Sessions Sidebar -->
+            <div class="chat-sidebar">
+                <div class="chat-sidebar-header">
+                    <button class="btn btn-primary chat-new-btn" onclick="newConversation()">
+                        ✦ New Conversation
+                    </button>
+                </div>
+                <div class="chat-search">
+                    <input type="text" placeholder="Search conversations..." onkeyup="filterSessions(this.value)">
+                </div>
+                <div class="chat-list" id="chatList">
+                    <div class="empty-state" style="padding: var(--space-8) var(--space-4);" id="chatListLoading">
+                        <p style="font-size: var(--font-size-xs); color: var(--text-muted);">Loading...</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Chat Main -->
+            <div class="chat-main">
+                <!-- Active conversation -->
+                <div class="chat-messages d-none" id="chatMessages"></div>
+
+                <!-- Welcome State -->
+                <div class="chat-welcome" id="chatWelcome">
+                    <div class="chat-welcome-icon">✦</div>
+                    <h2 id="welcomeTitle">Hi Creator!</h2>
+                    <p>I'm your personalized AI assistant for content creation. How can I help you today?</p>
+                    <div class="chat-suggestions">
+                        <div class="chat-suggestion-card" onclick="sendSuggestion('Give me 5 content ideas for my niche')">
+                            <h4>💡 Content Ideas</h4>
+                            <p>Generate ideas for my niche</p>
+                        </div>
+                        <div class="chat-suggestion-card" onclick="sendSuggestion('Write a YouTube video script')">
+                            <h4>✍️ Write a Script</h4>
+                            <p>Create a video script</p>
+                        </div>
+                        <div class="chat-suggestion-card" onclick="sendSuggestion('Create Instagram captions for my content')">
+                            <h4>📱 Social Captions</h4>
+                            <p>Captions for my posts</p>
+                        </div>
+                        <div class="chat-suggestion-card" onclick="sendSuggestion('What are the best hashtags for my content?')">
+                            <h4>🏷️ Hashtag Strategy</h4>
+                            <p>Optimized hashtags</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Typing Indicator -->
+                <div class="typing-indicator" id="typingIndicator">
+                    <div class="chat-message-avatar" style="background: var(--gradient-primary); color: white; width: 28px; height: 28px; font-size: 0.7rem;">✦</div>
+                    <div class="typing-dots"><span></span><span></span><span></span></div>
+                    <span class="typing-text">CreatorAI is thinking...</span>
+                </div>
+
+                <!-- Input Area -->
+                <div class="chat-input-area">
+                    <div class="chat-input-container">
+                        <textarea class="chat-input" id="chatInput" placeholder="Ask CreatorAI anything about content creation..." rows="1" onkeydown="handleKeyDown(event)"></textarea>
+                        <button class="chat-send-btn" id="sendBtn" onclick="sendMessage()">➤</button>
+                    </div>
+                    <div class="chat-input-hint">
+                        CreatorAI uses your profile to personalize responses. Press Enter to send, Shift+Enter for new line.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+</div>
+
+<script src="/js/utils.js"></script>
+<script>
+    const token = localStorage.getItem('token');
+    if (!token) {
+        window.location.href = '/login.html';
+    }
+
+    let currentSessionId = new URLSearchParams(window.location.search).get('session') || null;
+    let isGenerating = false;
+    let userInitial = '?';
+
+    document.addEventListener('DOMContentLoaded', async () => {
+        autoResizeTextarea();
+        await loadUserData();
+        await loadSessions();
+        if (currentSessionId) {
+            await loadMessages();
+        }
+    });
+
+    async function loadUserData() {
+        try {
+            const res = await fetch('/api/creator/dashboard', {
+                headers: { 'Authorization': `Bearer ${token}` }
+            });
+            const data = await res.json();
+            if (data.success && data.data) {
+                const name = data.data.display_name || 'Creator';
+                userInitial = name.charAt(0).toUpperCase();
+                document.getElementById('userNameSidebar').textContent = name;
+                document.getElementById('userAvatar').textContent = userInitial;
+                document.getElementById('welcomeTitle').textContent = `Hi ${name}!`;
+            } else if (res.status === 401) {
+                logout();
+            }
+        } catch (e) {
+            console.error(e);
+        }
+    }
+
+    async function loadSessions() {
+        try {
+            const res = await fetch('/api/ai/sessions', {
+                headers: { 'Authorization': `Bearer ${token}` }
+            });
+            const data = await res.json();
+            const list = document.getElementById('chatList');
+            if (data.success && data.data.length > 0) {
+                list.innerHTML = data.data.map(s => `
+                    <a href="?session=${s.id}" class="chat-list-item ${s.id == currentSessionId ? 'active' : ''}">
+                        <div class="chat-list-item-icon">💬</div>
+                        <div class="chat-list-item-info">
+                            <div class="chat-list-item-title">${s.title}</div>
+                            <div class="chat-list-item-time">Active</div>
+                        </div>
+                    </a>
+                `).join('');
+            } else {
+                list.innerHTML = `<div class="empty-state" style="padding: var(--space-8) var(--space-4);"><p style="font-size: var(--font-size-xs); color: var(--text-muted);">No conversations yet</p></div>`;
+            }
+        } catch(e) {}
+    }
+
+    async function loadMessages() {
+        try {
+            const res = await fetch(`/api/ai/messages?session_id=${currentSessionId}`, {
+                headers: { 'Authorization': `Bearer ${token}` }
+            });
+            const data = await res.json();
+            if (data.success) {
+                document.getElementById('chatWelcome').classList.add('d-none');
+                const messagesArea = document.getElementById('chatMessages');
+                messagesArea.classList.remove('d-none');
+                messagesArea.innerHTML = '';
+                
+                data.data.messages.forEach(msg => {
+                    appendMessage(msg.role, msg.content, false);
+                });
+                scrollToBottom();
+            }
+        } catch(e) {}
+    }
+
+    function toggleSidebar() {
+        document.getElementById('sidebar').classList.toggle('open');
+        document.getElementById('sidebarOverlay').classList.toggle('active');
+    }
+
+    function autoResizeTextarea() {
+        const ta = document.getElementById('chatInput');
+        ta.addEventListener('input', () => {
+            ta.style.height = 'auto';
+            ta.style.height = Math.min(ta.scrollHeight, 150) + 'px';
+        });
+    }
+
+    function handleKeyDown(e) {
+        if (e.key === 'Enter' && !e.shiftKey) {
+            e.preventDefault();
+            sendMessage();
+        }
+    }
+
+    function scrollToBottom() {
+        const container = document.getElementById('chatMessages');
+        if (container) container.scrollTop = container.scrollHeight;
+    }
+
+    function newConversation() {
+        window.location.href = '/creator/chat.html';
+    }
+
+    function filterSessions(query) {
+        document.querySelectorAll('.chat-list-item').forEach(item => {
+            const title = item.querySelector('.chat-list-item-title').textContent.toLowerCase();
+            item.style.display = title.includes(query.toLowerCase()) ? '' : 'none';
+        });
+    }
+
+    function sendSuggestion(text) {
+        document.getElementById('chatInput').value = text;
+        sendMessage();
+    }
+
+    async function sendMessage() {
+        if (isGenerating) return;
+        
+        const input = document.getElementById('chatInput');
+        const message = input.value.trim();
+        if (!message) return;
+
+        isGenerating = true;
+        input.value = '';
+        input.style.height = 'auto';
+        document.getElementById('sendBtn').disabled = true;
+
+        document.getElementById('chatWelcome').classList.add('d-none');
+        document.getElementById('chatMessages').classList.remove('d-none');
+
+        appendMessage('user', message, true);
+        document.getElementById('typingIndicator').classList.add('active');
+        scrollToBottom();
+
+        try {
+            const res = await fetch('/api/ai/chat', {
+                method: 'POST',
+                headers: { 
+                    'Authorization': `Bearer ${token}`,
+                    'Content-Type': 'application/json' 
+                },
+                body: JSON.stringify({
+                    message: message,
+                    session_id: currentSessionId
+                })
+            });
+            
+            const result = await res.json();
+            document.getElementById('typingIndicator').classList.remove('active');
+
+            if (result.success) {
+                currentSessionId = result.session_id;
+                appendMessage('ai', result.response, true);
+                
+                if (currentSessionId && !window.location.search.includes('session=')) {
+                    history.replaceState(null, '', '?session=' + currentSessionId);
+                    loadSessions(); // refresh sidebar list
+                }
+            } else {
+                if (res.status === 401) logout();
+                appendMessage('ai', 'Error: ' + result.error, true);
+            }
+        } catch (error) {
+            document.getElementById('typingIndicator').classList.remove('active');
+            appendMessage('ai', 'Network error. Please try again.', true);
+        }
+
+        isGenerating = false;
+        document.getElementById('sendBtn').disabled = false;
+        input.focus();
+    }
+
+    function appendMessage(role, content, scroll = false) {
+        const messages = document.getElementById('chatMessages');
+        const div = document.createElement('div');
+        div.className = `chat-message ${role === 'user' ? 'user' : 'ai'}`;
+        
+        const avatar = role === 'user' ? userInitial : '✦';
+        
+        // Simple markdown parsing for the AI
+        let displayContent = content;
+        if (role === 'ai' || role === 'assistant') {
+            displayContent = content
+                .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+                .replace(/\*(.*?)\*/g, '<em>$1</em>')
+                .replace(/\n/g, '<br>');
+        } else {
+            // Escape user input
+            displayContent = content.replace(/</g, "&lt;").replace(/>/g, "&gt;");
+        }
+
+        div.innerHTML = `
+            <div class="chat-message-avatar">${avatar}</div>
+            <div>
+                <div class="chat-message-bubble">${displayContent}</div>
+            </div>
+        `;
+        messages.appendChild(div);
+        if (scroll) scrollToBottom();
+    }
+</script>
+</body>
+</html>

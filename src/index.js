@@ -7,6 +7,8 @@ app.use('*', cors())
 
 import authRoutes from './routes/auth.js'
 import creatorRoutes from './routes/creator.js'
+import aiRoutes from './routes/ai.js'
+import managementRoutes from './routes/management.js'
 
 // Basic Health Check Endpoint
 app.get('/api/health', (c) => {
@@ -15,6 +17,8 @@ app.get('/api/health', (c) => {
 
 app.route('/api/auth', authRoutes)
 app.route('/api/creator', creatorRoutes)
+app.route('/api/ai', aiRoutes)
+app.route('/api/management', managementRoutes)
 
 // Database Connection Test Endpoint
 app.get('/api/db-test', async (c) => {

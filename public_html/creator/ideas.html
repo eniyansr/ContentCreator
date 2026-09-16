@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Content Ideas – CreatorAI</title>
+    <link rel="stylesheet" href="/css/global.css">
+    <link rel="stylesheet" href="/css/dashboard.css">
+    <link rel="stylesheet" href="/css/ideas.css">
+    <link rel="stylesheet" href="/css/responsive.css">
+</head>
+<body>
+<div class="app-layout">
+    <!-- Sidebar -->
+    <aside class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <a href="/creator/dashboard.html" class="sidebar-logo">
+                <div class="sidebar-logo-icon">✦</div>
+                CreatorAI
+            </a>
+        </div>
+        <nav class="sidebar-nav">
+            <div class="sidebar-section">
+                <a href="/creator/dashboard.html" class="sidebar-link"><span class="sidebar-link-icon">📊</span> Dashboard</a>
+                <a href="/creator/chat.html" class="sidebar-link"><span class="sidebar-link-icon">💬</span> AI Creator Chat</a>
+                <a href="/creator/ideas.html" class="sidebar-link active"><span class="sidebar-link-icon">💡</span> Content Ideas</a>
+                <a href="/creator/content-generator.html" class="sidebar-link"><span class="sidebar-link-icon">✍️</span> Generate Content</a>
+                <a href="/creator/repurpose.html" class="sidebar-link"><span class="sidebar-link-icon">🔄</span> Repurpose</a>
+                <a href="/creator/analyzer.html" class="sidebar-link"><span class="sidebar-link-icon">🔍</span> Content Analyzer</a>
+            </div>
+            <div class="sidebar-section">
+                <div class="sidebar-section-title">Manage</div>
+                <a href="/creator/analytics.html" class="sidebar-link"><span class="sidebar-link-icon">📈</span> Analytics</a>
+                <a href="/creator/calendar.html" class="sidebar-link"><span class="sidebar-link-icon">📅</span> Calendar</a>
+                <a href="/creator/library.html" class="sidebar-link"><span class="sidebar-link-icon">📚</span> Saved Content</a>
+                <a href="/creator/templates.html" class="sidebar-link"><span class="sidebar-link-icon">📋</span> Templates</a>
+            </div>
+            <div class="sidebar-section">
+                <div class="sidebar-section-title">Settings</div>
+                <a href="/creator/profile.html" class="sidebar-link"><span class="sidebar-link-icon">👤</span> My Profile</a>
+                <a href="/creator/notifications.html" class="sidebar-link"><span class="sidebar-link-icon">🔔</span> Notifications</a>
+            </div>
+        </nav>
+        <div class="sidebar-footer">
+            <div class="sidebar-user">
+                <div class="avatar avatar-sm" id="userAvatar">?</div>
+                <div class="sidebar-user-info">
+                    <div class="sidebar-user-name" id="userNameSidebar">Loading...</div>
+                    <div class="sidebar-user-role">Creator</div>
+                </div>
+            </div>
+            <button class="btn btn-sm btn-outline" style="width: 100%; margin-top: var(--space-2); border-color: var(--border-color); color: var(--text-muted);" onclick="logout()">Logout</button>
+        </div>
+    </aside>
+    <div class="sidebar-overlay" id="sidebarOverlay" onclick="toggleSidebar()"></div>
+
+    <main class="main-content">
+        <header class="top-header">
+            <div class="top-header-left">
+                <button class="menu-toggle" onclick="toggleSidebar()">☰</button>
+                <h2 class="page-title">Content Ideas</h2>
+            </div>
+        </header>
+
+        <div class="page-content">
+            <div class="ideas-layout">
+                <!-- Main Area -->
+                <div class="ideas-main">
+                    <!-- Generator Card -->
+                    <div class="generator-card">
+                        <h2 class="generator-title">💡 AI Idea Lab</h2>
+                        <p class="generator-desc">Generate personalized content ideas tailored to your audience and niche.</p>
+                        
+                        <div class="generator-form" id="ideaGeneratorForm">
+                            <div class="generator-input-group">
+                                <div class="generator-input form-group" style="margin: 0;">
+                                    <input type="text" id="topicInput" class="form-input" placeholder="Topic or theme (optional, e.g. 'morning routine')">
+                                </div>
+                                <button class="btn btn-primary" id="generateBtn" onclick="generateIdeas()">
+                                    ✨ Generate Ideas
+                                </button>
+                            </div>
+                            
+                            <div class="generator-options">
+                                <div class="form-group" style="margin: 0;">
+                                    <label class="form-label">Platform</label>
+                                    <select id="platformInput" class="form-select">
+                                        <option value="Any Platform">Any Platform</option>
+                                        <option value="YouTube">YouTube</option>
+                                        <option value="Instagram">Instagram</option>
+                                        <option value="TikTok">TikTok</option>
+                                    </select>
+                                </div>
+                                <div class="form-group" style="margin: 0;">
+                                    <label class="form-label">Format</label>
+                                    <select id="formatInput" class="form-select">
+                                        <option value="Any Format">Any Format</option>
+                                        <option value="Short Video">Short Video (Reels/Shorts/TikTok)</option>
+                                        <option value="Long Video">Long Video</option>
+                                        <option value="Carousel/Post">Carousel/Post</option>
+                                        <option value="Thread/Text">Thread/Text</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Generated Ideas Container -->
+                    <div id="generatedContainer" class="d-none" style="margin-bottom: var(--space-8);">
+                        <div class="ideas-header">
+                            <h3>✨ Generated Ideas</h3>
+                            <button class="btn btn-ghost btn-sm" onclick="clearGenerated()">Clear</button>
+                        </div>
+                        <div class="ideas-grid" id="generatedGrid">
+                            <!-- Populated via JS -->
+                        </div>
+                    </div>
+
+                    <!-- Saved Ideas -->
+                    <div class="ideas-header">
+                        <h3>📚 My Idea Library</h3>
+                        <div class="ideas-filter">
+                            <button class="filter-btn active" onclick="filterIdeas('all', this)">All</button>
+                            <button class="filter-btn" onclick="filterIdeas('idea', this)">Ideas</button>
+                            <button class="filter-btn" onclick="filterIdeas('planned', this)">Planned</button>
+                            <button class="filter-btn" onclick="filterIdeas('completed', this)">Completed</button>
+                        </div>
+                    </div>
+                    
+                    <div class="ideas-grid" id="savedGrid">
+                        <div class="empty-state" style="grid-column: 1 / -1; padding: var(--space-8);" id="ideasLoading">
+                            <p>Loading your ideas...</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Sidebar -->
+                <div class="ideas-sidebar">
+                    <div class="trending-card">
+                        <div class="trending-header">📈 Trending in <span id="nicheLabel">your niche</span></div>
+                        <ul class="trending-list">
+                            <li class="trending-item" onclick="useTrendingTopic('Beginner guide')">
+                                <div class="trending-rank">#1</div>
+                                <div class="trending-info">
+                                    <div class="trending-title">Beginner guides</div>
+                                    <div class="trending-meta">High search volume</div>
+                                </div>
+                            </li>
+                            <li class="trending-item" onclick="useTrendingTopic('Common mistakes')">
+                                <div class="trending-rank">#2</div>
+                                <div class="trending-info">
+                                    <div class="trending-title">Common mistakes</div>
+                                    <div class="trending-meta">High engagement</div>
+                                </div>
+                            </li>
+                            <li class="trending-item" onclick="useTrendingTopic('My workflow / Behind the scenes')">
+                                <div class="trending-rank">#3</div>
+                                <div class="trending-info">
+                                    <div class="trending-title">Behind the scenes</div>
+                                    <div class="trending-meta">Builds trust</div>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                    
+                    <div class="dashboard-card" style="margin-top: var(--space-4);">
+                        <h4 style="font-size: var(--font-size-sm); margin-bottom: var(--space-2);">Pro Tip 💡</h4>
+                        <p style="font-size: var(--font-size-xs); color: var(--text-secondary); line-height: 1.6;">
+                            Save the ideas you like! Once saved, you can send them directly to the Content Generator to instantly create full scripts, captions, or outlines.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+</div>
+
+<script src="/js/utils.js"></script>
+<script>
+    const token = localStorage.getItem('token');
+    if (!token) window.location.href = '/login.html';
+
+    document.addEventListener('DOMContentLoaded', async () => {
+        await loadUserData();
+        await loadSavedIdeas();
+    });
+
+    function toggleSidebar() {
+        document.getElementById('sidebar').classList.toggle('open');
+        document.getElementById('sidebarOverlay').classList.toggle('active');
+    }
+
+    async function loadUserData() {
+        try {
+            const res = await fetch('/api/creator/dashboard', { headers: { 'Authorization': `Bearer ${token}` } });
+            const data = await res.json();
+            if (data.success && data.data) {
+                const name = data.data.display_name || 'Creator';
+                document.getElementById('userNameSidebar').textContent = name;
+                document.getElementById('userAvatar').textContent = name.charAt(0).toUpperCase();
+                
+                // Add platforms to select dynamically
+                const platforms = data.data.platforms;
+                if (platforms && platforms.length > 0) {
+                    const sel = document.getElementById('platformInput');
+                    // Remove existing options except the static ones
+                    const staticOptions = ["Any Platform", "YouTube", "Instagram", "TikTok"];
+                    sel.innerHTML = '';
+                    staticOptions.forEach(opt => {
+                        sel.innerHTML += `<option value="${opt}">${opt}</option>`;
+                    });
+                    platforms.forEach(p => {
+                        if (!staticOptions.includes(p.platform_name)) {
+                            sel.innerHTML += `<option value="${p.platform_name}">${p.platform_name}</option>`;
+                        }
+                    });
+                }
+            } else if (res.status === 401) logout();
+        } catch(e) {}
+    }
+
+    async function loadSavedIdeas() {
+        try {
+            const res = await fetch('/api/management/ideas', { headers: { 'Authorization': `Bearer ${token}` } });
+            const data = await res.json();
+            const grid = document.getElementById('savedGrid');
+            if (data.success) {
+                if (data.data.savedIdeas.length === 0) {
+                    grid.innerHTML = `
+                        <div class="empty-state" style="grid-column: 1 / -1; padding: var(--space-8);">
+                            <div class="empty-state-icon">💡</div>
+                            <h3>No saved ideas yet</h3>
+                            <p>Generate some ideas above and save the ones you like.</p>
+                        </div>
+                    `;
+                } else {
+                    grid.innerHTML = data.data.savedIdeas.map(idea => {
+                        let tags = [];
+                        try { tags = JSON.parse(idea.tags) || []; } catch(e){}
+                        const score = idea.viral_score || 0;
+                        const scoreClass = score >= 80 ? 'high' : (score >= 50 ? 'med' : 'low');
+                        
+                        return `
+                        <div class="idea-card" data-status="${idea.status}" id="idea_${idea.id}">
+                            <div class="idea-header">
+                                <span class="idea-platform">${Utils.escapeHtml(idea.platform)}</span>
+                                <span class="idea-score ${scoreClass}" data-tooltip="Viral Potential Score">🔥 ${score}</span>
+                            </div>
+                            <h4 class="idea-title">${Utils.escapeHtml(idea.title)}</h4>
+                            <p class="idea-desc">${Utils.escapeHtml(idea.description)}</p>
+                            
+                            <div class="idea-meta">
+                                ${tags.map(tag => `<span class="idea-tag">#${Utils.escapeHtml(tag)}</span>`).join('')}
+                            </div>
+                            
+                            <div class="idea-actions">
+                                <div class="idea-actions-left">
+                                    <select class="form-select" style="padding: 2px 8px; font-size: 11px; height: auto;" onchange="updateIdeaStatus(${idea.id}, this.value)">
+                                        <option value="idea" ${idea.status == 'idea' ? 'selected' : ''}>Idea</option>
+                                        <option value="planned" ${idea.status == 'planned' ? 'selected' : ''}>Planned</option>
+                                        <option value="completed" ${idea.status == 'completed' ? 'selected' : ''}>Completed</option>
+                                    </select>
+                                </div>
+                                <div class="idea-actions-right">
+                                    <a href="/creator/content-generator.html?idea_id=${idea.id}" class="idea-action-btn generate">✍️ Create</a>
+                                    <button class="idea-action-btn" onclick="deleteIdea(${idea.id})">🗑️</button>
+                                </div>
+                            </div>
+                        </div>
+                        `;
+                    }).join('');
+                }
+            }
+        } catch(e) {}
+    }
+
+    function useTrendingTopic(topic) {
+        document.getElementById('topicInput').value = topic;
+        document.getElementById('topicInput').focus();
+    }
+
+    function filterIdeas(status, btn) {
+        document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        document.querySelectorAll('#savedGrid .idea-card').forEach(card => {
+            if (status === 'all' || card.dataset.status === status) {
+                card.style.display = 'flex';
+            } else {
+                card.style.display = 'none';
+            }
+        });
+    }
+
+    async function generateIdeas() {
+        const btn = document.getElementById('generateBtn');
+        const topic = document.getElementById('topicInput').value.trim();
+        const platform = document.getElementById('platformInput').value;
+        const format = document.getElementById('formatInput').value;
+
+        if (!topic) return Utils.toast('Please enter a topic', 'error');
+
+        Utils.btnLoading(btn, true);
+
+        try {
+            const res = await fetch('/api/ai/ideas', {
+                method: 'POST',
+                headers: { 'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json' },
+                body: JSON.stringify({ topic, platform, format, count: 4 })
+            });
+            const result = await res.json();
+            
+            if (result.success && result.data && result.data.ideas) {
+                renderGeneratedIdeas(result.data.ideas, platform, format);
+            } else {
+                Utils.toast(result.error || 'Failed to generate', 'error');
+            }
+        } catch (error) {
+            Utils.toast('Network error', 'error');
+        }
+
+        Utils.btnLoading(btn, false);
+    }
+
+    function renderGeneratedIdeas(ideas, platform, format) {
+        const container = document.getElementById('generatedContainer');
+        const grid = document.getElementById('generatedGrid');
+        grid.innerHTML = '';
+        container.classList.remove('d-none');
+
+        ideas.forEach((idea, index) => {
+            const score = Math.floor(Math.random() * (99 - 60 + 1)) + 60; // Mock score for AI generated
+            const scoreClass = score >= 80 ? 'high' : (score >= 50 ? 'med' : 'low');
+            let tags = ['idea', 'content'];
+            if (idea.platform) tags.push(idea.platform.toLowerCase());
+            
+            const ideaObj = {
+                title: idea.title,
+                description: idea.description,
+                viral_score: score,
+                tags: tags,
+                platform: idea.platform || platform,
+                format: idea.format || format
+            };
+            const ideaJson = Utils.escapeHtml(JSON.stringify(ideaObj));
+
+            grid.innerHTML += `
+                <div class="idea-card animate-in" style="animation-delay: ${index * 0.1}s">
+                    <div class="idea-header">
+                        <span class="idea-platform">${Utils.escapeHtml(ideaObj.platform)}</span>
+                        <span class="idea-score ${scoreClass}">🔥 ${score}</span>
+                    </div>
+                    <h4 class="idea-title">${Utils.escapeHtml(ideaObj.title)}</h4>
+                    <p class="idea-desc">${Utils.escapeHtml(ideaObj.description)}</p>
+                    <div class="idea-actions" style="justify-content: flex-end; margin-top: auto; padding-top: var(--space-4);">
+                        <button class="btn btn-primary btn-sm" onclick="saveGeneratedIdea(this, '${ideaJson}')">💾 Save Idea</button>
+                    </div>
+                </div>
+            `;
+        });
+    }
+
+    function clearGenerated() {
+        document.getElementById('generatedContainer').classList.add('d-none');
+        document.getElementById('generatedGrid').innerHTML = '';
+    }
+
+    async function saveGeneratedIdea(btn, ideaJsonStr) {
+        try {
+            const parser = new DOMParser();
+            const unescapedStr = parser.parseFromString(ideaJsonStr, 'text/html').documentElement.textContent;
+            const ideaObj = JSON.parse(unescapedStr);
+            
+            Utils.btnLoading(btn, true);
+            
+            const res = await fetch('/api/management/ideas/save', {
+                method: 'POST',
+                headers: { 'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json' },
+                body: JSON.stringify(ideaObj)
+            });
+            const result = await res.json();
+
+            if (result.success) {
+                Utils.toast('Idea saved to library!', 'success');
+                btn.innerHTML = '✓ Saved';
+                btn.className = 'btn btn-success btn-sm';
+                btn.disabled = true;
+                setTimeout(() => loadSavedIdeas(), 1000);
+            } else {
+                Utils.toast(result.error, 'error');
+                Utils.btnLoading(btn, false);
+            }
+        } catch (error) {
+            Utils.toast('Error saving idea', 'error');
+            Utils.btnLoading(btn, false);
+        }
+    }
+
+    async function updateIdeaStatus(id, status) {
+        try {
+            await fetch('/api/management/ideas/status', {
+                method: 'POST',
+                headers: { 'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json' },
+                body: JSON.stringify({ id, status })
+            });
+            document.getElementById('idea_' + id).dataset.status = status;
+            Utils.toast('Status updated', 'success');
+        } catch (error) {
+            Utils.toast('Failed to update status', 'error');
+        }
+    }
+
+    async function deleteIdea(id) {
+        if (!await Utils.confirm('Are you sure you want to delete this idea?')) return;
+        try {
+            const res = await fetch('/api/management/ideas/delete', {
+                method: 'POST',
+                headers: { 'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json' },
+                body: JSON.stringify({ id })
+            });
+            const result = await res.json();
+            if (result.success) {
+                const card = document.getElementById('idea_' + id);
+                card.style.opacity = '0';
+                setTimeout(() => card.remove(), 300);
+                Utils.toast('Idea deleted', 'success');
+            }
+        } catch (error) {
+            Utils.toast('Failed to delete idea', 'error');
+        }
+    }
+</script>
+</body>
+</html>

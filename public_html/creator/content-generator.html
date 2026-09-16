@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Generate Content – CreatorAI</title>
+    <link rel="stylesheet" href="/css/global.css">
+    <link rel="stylesheet" href="/css/dashboard.css">
+    <link rel="stylesheet" href="/css/generator.css">
+</head>
+<body>
+<div class="app-layout">
+    <!-- Sidebar -->
+    <aside class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <a href="/creator/dashboard.html" class="sidebar-logo">
+                <div class="sidebar-logo-icon">✦</div>
+                CreatorAI
+            </a>
+        </div>
+        <nav class="sidebar-nav">
+            <div class="sidebar-section">
+                <a href="/creator/dashboard.html" class="sidebar-link"><span class="sidebar-link-icon">📊</span> Dashboard</a>
+                <a href="/creator/chat.html" class="sidebar-link"><span class="sidebar-link-icon">💬</span> AI Creator Chat</a>
+                <a href="/creator/ideas.html" class="sidebar-link"><span class="sidebar-link-icon">💡</span> Content Ideas</a>
+                <a href="/creator/content-generator.html" class="sidebar-link active"><span class="sidebar-link-icon">✍️</span> Generate Content</a>
+                <a href="/creator/repurpose.html" class="sidebar-link"><span class="sidebar-link-icon">🔄</span> Repurpose</a>
+                <a href="/creator/analyzer.html" class="sidebar-link"><span class="sidebar-link-icon">🔍</span> Content Analyzer</a>
+            </div>
+            <div class="sidebar-section">
+                <div class="sidebar-section-title">Manage</div>
+                <a href="/creator/analytics.html" class="sidebar-link"><span class="sidebar-link-icon">📈</span> Analytics</a>
+                <a href="/creator/calendar.html" class="sidebar-link"><span class="sidebar-link-icon">📅</span> Calendar</a>
+                <a href="/creator/library.html" class="sidebar-link"><span class="sidebar-link-icon">📚</span> Saved Content</a>
+                <a href="/creator/templates.html" class="sidebar-link"><span class="sidebar-link-icon">📋</span> Templates</a>
+            </div>
+            <div class="sidebar-section">
+                <div class="sidebar-section-title">Settings</div>
+                <a href="/creator/profile.html" class="sidebar-link"><span class="sidebar-link-icon">👤</span> My Profile</a>
+                <a href="/creator/notifications.html" class="sidebar-link"><span class="sidebar-link-icon">🔔</span> Notifications</a>
+            </div>
+        </nav>
+        <div class="sidebar-footer">
+            <div class="sidebar-user">
+                <div class="avatar avatar-sm" id="userAvatar">?</div>
+                <div class="sidebar-user-info">
+                    <div class="sidebar-user-name" id="userNameSidebar">Loading...</div>
+                    <div class="sidebar-user-role">Creator</div>
+                </div>
+            </div>
+            <button class="btn btn-sm btn-outline" style="width: 100%; margin-top: var(--space-2); border-color: var(--border-color); color: var(--text-muted);" onclick="logout()">Logout</button>
+        </div>
+    </aside>
+
+    <main class="main-content">
+        <header class="top-header">
+            <div class="top-header-left">
+                <button class="menu-toggle" onclick="toggleSidebar()">☰</button>
+                <h2 class="page-title">Content Generator</h2>
+            </div>
+        </header>
+
+        <div class="page-content">
+            <div class="generator-layout">
+                
+                <!-- Options Panel -->
+                <div class="generator-options-panel">
+                    <div class="generator-panel-header">
+                        <h3 class="generator-panel-title">🛠️ Generation Settings</h3>
+                    </div>
+                    
+                    <div class="generator-panel-body">
+                        <!-- What to create -->
+                        <div class="form-group">
+                            <label class="form-label">What do you want to create?</label>
+                            <div class="content-type-grid" id="contentTypeGrid">
+                                <label class="content-type-card selected">
+                                    <input type="radio" name="content_type" value="script" checked>
+                                    <div class="content-type-icon">🎬</div>
+                                    <div class="content-type-name">Full Script</div>
+                                </label>
+                                <label class="content-type-card">
+                                    <input type="radio" name="content_type" value="caption">
+                                    <div class="content-type-icon">📱</div>
+                                    <div class="content-type-name">Social Caption</div>
+                                </label>
+                                <label class="content-type-card">
+                                    <input type="radio" name="content_type" value="outline">
+                                    <div class="content-type-icon">📝</div>
+                                    <div class="content-type-name">Outline / Plan</div>
+                                </label>
+                                <label class="content-type-card">
+                                    <input type="radio" name="content_type" value="hooks">
+                                    <div class="content-type-icon">🎣</div>
+                                    <div class="content-type-name">Hooks / Intros</div>
+                                </label>
+                                <label class="content-type-card">
+                                    <input type="radio" name="content_type" value="title">
+                                    <div class="content-type-icon">✨</div>
+                                    <div class="content-type-name">Titles / Headlines</div>
+                                </label>
+                            </div>
+                        </div>
+                        
+                        <!-- Topic / Idea -->
+                        <div class="form-group">
+                            <label class="form-label">Topic or Idea <span class="required">*</span></label>
+                            
+                            <div id="ideaContainer" class="d-none">
+                                <div class="reference-item">
+                                    <div class="reference-item-content">
+                                        <div class="reference-item-title" id="ideaTitleLabel">💡 Idea Title</div>
+                                    </div>
+                                    <button class="reference-item-remove" onclick="clearIdea()" title="Remove idea">×</button>
+                                </div>
+                            </div>
+                            
+                            <input type="hidden" id="ideaId" value="0">
+                            <textarea id="topicInput" class="form-textarea" rows="3" placeholder="What should this content be about? Be as specific as you like..."></textarea>
+                            <div class="form-hint" style="text-align: right;"><a href="/creator/ideas.html">Or select from saved ideas →</a></div>
+                        </div>
+                        
+                        <!-- Target Platform -->
+                        <div class="form-group">
+                            <label class="form-label">Target Platform</label>
+                            <select id="platformInput" class="form-select">
+                                <option value="YouTube">YouTube</option>
+                                <option value="Instagram">Instagram Reels/Post</option>
+                                <option value="TikTok">TikTok</option>
+                                <option value="LinkedIn">LinkedIn</option>
+                                <option value="X/Twitter">X / Twitter</option>
+                                <option value="General">General / Multi-purpose</option>
+                            </select>
+                        </div>
+                        
+                        <!-- Length & Tone -->
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-3);">
+                            <div class="form-group mb-0">
+                                <label class="form-label">Length</label>
+                                <select id="lengthInput" class="form-select">
+                                    <option value="short">Short & Punchy</option>
+                                    <option value="medium" selected>Medium / Standard</option>
+                                    <option value="detailed">Long & Detailed</option>
+                                </select>
+                            </div>
+                            <div class="form-group mb-0">
+                                <label class="form-label">Tone (Override)</label>
+                                <select id="toneInput" class="form-select">
+                                    <option value="default">My Default Brand Voice</option>
+                                    <option value="highly professional">Highly Professional</option>
+                                    <option value="very casual">Very Casual & Raw</option>
+                                    <option value="funny and sarcastic">Funny / Sarcastic</option>
+                                    <option value="educational and academic">Educational / Academic</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="generator-panel-footer">
+                        <button class="btn btn-primary btn-lg w-full" id="generateBtn" onclick="generateContent()">
+                            ✨ Generate Content
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Main Editor Panel -->
+                <div class="generator-editor-panel">
+                    <div class="editor-header">
+                        <div class="editor-tabs">
+                            <button class="editor-tab active">Preview / Result</button>
+                        </div>
+                        <div class="editor-actions">
+                            <button class="btn btn-secondary btn-sm" id="copyBtn" onclick="copyResult()" disabled>📋 Copy</button>
+                            <button class="btn btn-success btn-sm" id="saveBtn" onclick="saveResult()" disabled>💾 Save to Library</button>
+                        </div>
+                    </div>
+                    
+                    <div class="editor-body">
+                        <!-- Empty State -->
+                        <div class="editor-empty" id="editorEmpty">
+                            <div class="editor-empty-icon">✍️</div>
+                            <h3>Ready to Create</h3>
+                            <p>Configure your settings on the left and click Generate.</p>
+                        </div>
+                        
+                        <!-- Loading State -->
+                        <div class="editor-loading hidden" id="editorLoading">
+                            <div class="loading-spinner"></div>
+                            <p>AI is writing your content...</p>
+                            <p style="font-size: var(--font-size-sm); color: var(--text-muted); font-weight: 400; margin-top: var(--space-2);">Applying your creator profile, brand voice, and niche data.</p>
+                        </div>
+                        
+                        <!-- Result Content -->
+                        <div class="result-content hidden" id="resultContent">
+                            <!-- Rendered markdown output goes here -->
+                        </div>
+                    </div>
+                </div>
+                
+            </div>
+        </div>
+    </main>
+</div>
+
+<!-- Save Modal -->
+<div class="modal-backdrop" id="saveModal-backdrop"></div>
+<div class="modal" id="saveModal">
+    <div class="modal-header">
+        <h3 class="modal-title">Save to Library</h3>
+        <button class="modal-close" onclick="Utils.closeModal('saveModal')">×</button>
+    </div>
+    <div class="form-group">
+        <label class="form-label">Title</label>
+        <input type="text" id="saveTitle" class="form-input" placeholder="e.g. YouTube Script - Morning Routine">
+    </div>
+    <div style="display: flex; justify-content: flex-end; gap: var(--space-3); margin-top: var(--space-6);">
+        <button class="btn btn-secondary" onclick="Utils.closeModal('saveModal')">Cancel</button>
+        <button class="btn btn-primary" id="confirmSaveBtn" onclick="confirmSave()">Save Content</button>
+    </div>
+</div>
+
+<script src="/js/utils.js"></script>
+<script>
+    const token = localStorage.getItem('token');
+    if (!token) window.location.href = '/login.html';
+
+    let currentRawContent = '';
+    let currentTopicForSave = '';
+
+    document.addEventListener('DOMContentLoaded', async () => {
+        // Handle content type grid selection
+        document.querySelectorAll('.content-type-card').forEach(card => {
+            card.addEventListener('click', () => {
+                document.querySelectorAll('.content-type-card').forEach(c => c.classList.remove('selected'));
+                card.classList.add('selected');
+                card.querySelector('input').checked = true;
+            });
+        });
+
+        await loadUserData();
+
+        // Check query string for idea_id
+        const ideaIdParam = new URLSearchParams(window.location.search).get('idea_id');
+        if (ideaIdParam) {
+            await loadIdeaData(ideaIdParam);
+        }
+    });
+
+    function toggleSidebar() {
+        document.getElementById('sidebar').classList.toggle('open');
+    }
+
+    function clearIdea() {
+        document.getElementById('ideaId').value = "0";
+        document.getElementById('ideaContainer').classList.add('d-none');
+        document.getElementById('topicInput').style.display = 'block';
+        window.history.replaceState({}, '', '/creator/content-generator.html');
+    }
+
+    async function loadUserData() {
+        try {
+            const res = await fetch('/api/creator/dashboard', { headers: { 'Authorization': `Bearer ${token}` } });
+            const data = await res.json();
+            if (data.success && data.data) {
+                const name = data.data.display_name || 'Creator';
+                document.getElementById('userNameSidebar').textContent = name;
+                document.getElementById('userAvatar').textContent = name.charAt(0).toUpperCase();
+                
+                // Add platforms
+                const platforms = data.data.platforms;
+                if (platforms && platforms.length > 0) {
+                    const sel = document.getElementById('platformInput');
+                    platforms.forEach(p => {
+                        if (![...sel.options].some(opt => opt.value === p.platform_name)) {
+                            sel.innerHTML += `<option value="${p.platform_name}">${p.platform_name}</option>`;
+                        }
+                    });
+                }
+            } else if (res.status === 401) logout();
+        } catch(e) {}
+    }
+
+    async function loadIdeaData(id) {
+        try {
+            const res = await fetch('/api/management/ideas', { headers: { 'Authorization': `Bearer ${token}` } });
+            const data = await res.json();
+            if (data.success) {
+                const idea = data.data.savedIdeas.find(i => i.id == id);
+                if (idea) {
+                    document.getElementById('ideaId').value = id;
+                    document.getElementById('ideaContainer').classList.remove('d-none');
+                    document.getElementById('ideaTitleLabel').innerHTML = `💡 ${Utils.escapeHtml(idea.title)}`;
+                    document.getElementById('topicInput').style.display = 'none';
+                    if (idea.platform) {
+                        document.getElementById('platformInput').value = idea.platform;
+                    }
+                }
+            }
+        } catch (e) {}
+    }
+
+    async function generateContent() {
+        const topicInput = document.getElementById('topicInput');
+        const topic = topicInput.style.display === 'none' ? '' : topicInput.value.trim();
+        const ideaId = document.getElementById('ideaId').value;
+        
+        if (!topic && ideaId == "0") {
+            Utils.toast('Please provide a topic to generate content for.', 'error');
+            topicInput.focus();
+            return;
+        }
+        
+        const btn = document.getElementById('generateBtn');
+        const contentType = document.querySelector('input[name="content_type"]:checked').value;
+        const platform = document.getElementById('platformInput').value;
+        const length = document.getElementById('lengthInput').value;
+        const tone = document.getElementById('toneInput').value;
+        
+        Utils.btnLoading(btn, true);
+        document.getElementById('editorEmpty').classList.add('hidden');
+        document.getElementById('resultContent').classList.add('hidden');
+        document.getElementById('editorLoading').classList.remove('hidden');
+        document.getElementById('copyBtn').disabled = true;
+        document.getElementById('saveBtn').disabled = true;
+        
+        try {
+            const res = await fetch('/api/ai/generate', {
+                method: 'POST',
+                headers: { 'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    content_type: contentType,
+                    platform: platform,
+                    topic: topic,
+                    idea_id: ideaId === "0" ? null : ideaId,
+                    length: length,
+                    tone: tone
+                })
+            });
+            const result = await res.json();
+            
+            if (result.success) {
+                currentRawContent = result.data.content;
+                currentTopicForSave = result.data.topic;
+                
+                document.getElementById('resultContent').innerHTML = Utils.markdownToHtml(currentRawContent);
+                document.getElementById('editorLoading').classList.add('hidden');
+                document.getElementById('resultContent').classList.remove('hidden');
+                
+                document.getElementById('copyBtn').disabled = false;
+                document.getElementById('saveBtn').disabled = false;
+                
+                const typeName = document.querySelector('.content-type-card.selected .content-type-name').textContent;
+                const shortTopic = currentTopicForSave.length > 30 ? currentTopicForSave.substring(0, 30) + '...' : currentTopicForSave;
+                document.getElementById('saveTitle').value = `${platform} ${typeName} - ${shortTopic}`;
+            } else {
+                if (res.status === 401) logout();
+                throw new Error(result.error);
+            }
+        } catch (error) {
+            Utils.toast(error.message || 'Generation failed', 'error');
+            document.getElementById('editorLoading').classList.add('hidden');
+            if (currentRawContent) {
+                document.getElementById('resultContent').classList.remove('hidden');
+            } else {
+                document.getElementById('editorEmpty').classList.remove('hidden');
+            }
+        }
+        
+        Utils.btnLoading(btn, false);
+    }
+    
+    function copyResult() {
+        if (!currentRawContent) return;
+        Utils.copyToClipboard(currentRawContent);
+    }
+    
+    function saveResult() {
+        if (!currentRawContent) return;
+        Utils.openModal('saveModal');
+    }
+    
+    async function confirmSave() {
+        const title = document.getElementById('saveTitle').value.trim();
+        if (!title) return Utils.toast('Please enter a title', 'error');
+        
+        const btn = document.getElementById('confirmSaveBtn');
+        Utils.btnLoading(btn, true);
+        
+        try {
+            const res = await fetch('/api/management/content/save', {
+                method: 'POST',
+                headers: { 'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    title: title,
+                    content: currentRawContent,
+                    content_type: document.querySelector('input[name="content_type"]:checked').value,
+                    platform: document.getElementById('platformInput').value
+                })
+            });
+            const result = await res.json();
+            
+            if (result.success) {
+                Utils.toast('Content saved successfully!', 'success');
+                Utils.closeModal('saveModal');
+                
+                const saveBtn = document.getElementById('saveBtn');
+                saveBtn.innerHTML = '✓ Saved';
+                saveBtn.classList.remove('btn-success');
+                saveBtn.classList.add('btn-secondary');
+                saveBtn.disabled = true;
+            } else {
+                Utils.toast(result.error, 'error');
+            }
+        } catch (error) {
+            Utils.toast('Failed to save', 'error');
+        }
+        
+        Utils.btnLoading(btn, false);
+    }
+</script>
+</body>
+</html>

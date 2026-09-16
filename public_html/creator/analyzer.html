@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Content Analyzer – CreatorAI</title>
+    <link rel="stylesheet" href="/css/global.css">
+    <link rel="stylesheet" href="/css/dashboard.css">
+    <link rel="stylesheet" href="/css/analyzer.css">
+</head>
+<body>
+<div class="app-layout">
+    <!-- Sidebar -->
+    <aside class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <a href="/creator/dashboard.html" class="sidebar-logo"><div class="sidebar-logo-icon">✦</div>CreatorAI</a>
+        </div>
+        <nav class="sidebar-nav">
+            <div class="sidebar-section">
+                <a href="/creator/dashboard.html" class="sidebar-link"><span class="sidebar-link-icon">📊</span> Dashboard</a>
+                <a href="/creator/chat.html" class="sidebar-link"><span class="sidebar-link-icon">💬</span> AI Creator Chat</a>
+                <a href="/creator/ideas.html" class="sidebar-link"><span class="sidebar-link-icon">💡</span> Content Ideas</a>
+                <a href="/creator/content-generator.html" class="sidebar-link"><span class="sidebar-link-icon">✍️</span> Generate Content</a>
+                <a href="/creator/repurpose.html" class="sidebar-link"><span class="sidebar-link-icon">🔄</span> Repurpose</a>
+                <a href="/creator/analyzer.html" class="sidebar-link active"><span class="sidebar-link-icon">🔍</span> Content Analyzer</a>
+            </div>
+            <div class="sidebar-section">
+                <div class="sidebar-section-title">Manage</div>
+                <a href="/creator/analytics.html" class="sidebar-link"><span class="sidebar-link-icon">📈</span> Analytics</a>
+                <a href="/creator/calendar.html" class="sidebar-link"><span class="sidebar-link-icon">📅</span> Calendar</a>
+                <a href="/creator/library.html" class="sidebar-link"><span class="sidebar-link-icon">📚</span> Saved Content</a>
+                <a href="/creator/templates.html" class="sidebar-link"><span class="sidebar-link-icon">📋</span> Templates</a>
+            </div>
+            <div class="sidebar-section">
+                <div class="sidebar-section-title">Settings</div>
+                <a href="/creator/profile.html" class="sidebar-link"><span class="sidebar-link-icon">👤</span> My Profile</a>
+                <a href="/creator/notifications.html" class="sidebar-link"><span class="sidebar-link-icon">🔔</span> Notifications</a>
+            </div>
+        </nav>
+        <div class="sidebar-footer">
+            <div class="sidebar-user">
+                <div class="avatar avatar-sm" id="userAvatar">?</div>
+                <div class="sidebar-user-info">
+                    <div class="sidebar-user-name" id="userNameSidebar">Loading...</div>
+                    <div class="sidebar-user-role">Creator</div>
+                </div>
+            </div>
+            <button class="btn btn-sm btn-outline" style="width: 100%; margin-top: var(--space-2); border-color: var(--border-color); color: var(--text-muted);" onclick="logout()">Logout</button>
+        </div>
+    </aside>
+
+    <main class="main-content">
+        <header class="top-header">
+            <div class="top-header-left">
+                <button class="menu-toggle" onclick="toggleSidebar()">☰</button>
+                <h2 class="page-title">Content Analyzer</h2>
+            </div>
+        </header>
+
+        <div class="page-content">
+            <div class="analyzer-layout">
+                
+                <!-- Input Panel -->
+                <div class="analyzer-input-panel">
+                    <div class="analyzer-panel-header">
+                        <div class="analyzer-panel-title">📝 Editor</div>
+                        <button class="btn btn-ghost btn-sm" onclick="document.getElementById('contentInput').value=''">Clear</button>
+                    </div>
+                    
+                    <div class="analyzer-form">
+                        <div class="analyzer-textarea-container">
+                            <textarea id="contentInput" class="analyzer-textarea" placeholder="Paste your script, caption, or outline here to analyze its viral potential..."></textarea>
+                        </div>
+                    </div>
+                    
+                    <div class="analyzer-controls">
+                        <div class="analyzer-controls-left">
+                            <div class="form-group mb-0" style="min-width: 150px;">
+                                <select id="platformInput" class="form-select">
+                                    <option value="YouTube">YouTube</option>
+                                    <option value="Instagram">Instagram</option>
+                                    <option value="TikTok">TikTok</option>
+                                </select>
+                            </div>
+                            <div class="form-group mb-0" style="min-width: 150px;">
+                                <select id="formatInput" class="form-select">
+                                    <option value="script">Video Script</option>
+                                    <option value="caption">Social Caption</option>
+                                    <option value="blog">Blog / Article</option>
+                                </select>
+                            </div>
+                        </div>
+                        <button class="btn btn-primary" id="analyzeBtn" onclick="analyzeContent()">
+                            🔍 Analyze Content
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Results Panel -->
+                <div class="analyzer-results-panel">
+                    <div class="analyzer-panel-header">
+                        <div class="analyzer-panel-title">📊 Analysis Report</div>
+                        <!-- Rewrite options shown only after analysis -->
+                        <div class="dropdown" id="rewriteDropdown" style="display: none;">
+                            <button class="btn btn-secondary btn-sm" onclick="this.nextElementSibling.classList.toggle('show')">✨ Auto-Improve ▼</button>
+                            <div class="dropdown-menu" style="right: 0; min-width: 180px;">
+                                <a href="#" class="dropdown-item" onclick="rewriteContent('general'); return false;">Improve Overall</a>
+                                <a href="#" class="dropdown-item" onclick="rewriteContent('hook'); return false;">Make Hook Stronger</a>
+                                <a href="#" class="dropdown-item" onclick="rewriteContent('engagement'); return false;">Boost Engagement</a>
+                                <a href="#" class="dropdown-item" onclick="rewriteContent('brand'); return false;">Align with Brand</a>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="analyzer-results-body">
+                        <!-- Empty State -->
+                        <div class="analyzer-empty" id="analyzerEmpty">
+                            <div class="analyzer-empty-icon">📈</div>
+                            <h3 style="color: var(--text-primary); margin-bottom: var(--space-2);">No Data Yet</h3>
+                            <p style="color: var(--text-secondary); font-size: var(--font-size-sm);">Paste your content and click Analyze to get AI feedback and viral scoring.</p>
+                        </div>
+                        
+                        <!-- Loading State -->
+                        <div class="analyzer-loading hidden" id="analyzerLoading">
+                            <div class="loading-spinner"></div>
+                            <p style="color: var(--primary-light); font-weight: 600; margin-top: var(--space-4);">Analyzing content metrics...</p>
+                        </div>
+                        
+                        <!-- Results Container -->
+                        <div id="resultsContainer" class="hidden">
+                            
+                            <!-- Score Overview -->
+                            <div class="score-overview">
+                                <div class="score-circle" id="overallScoreCircle">
+                                    <div class="score-value" id="overallScore">0</div>
+                                    <div class="score-max">/ 100</div>
+                                </div>
+                                <div class="score-label" id="scoreLabel">Good Potential</div>
+                                <div class="score-desc" id="scoreDesc">Analysis complete. Check metrics below.</div>
+                            </div>
+                            
+                            <!-- Metrics -->
+                            <div class="metrics-container">
+                                <!-- Hook -->
+                                <div class="metric-item" id="metricHook">
+                                    <div class="metric-header">
+                                        <div class="metric-name">🎣 Hook Strength</div>
+                                        <div class="metric-score">0/100</div>
+                                    </div>
+                                    <div class="metric-bar-bg"><div class="metric-bar-fill" style="width: 0%"></div></div>
+                                </div>
+                                <!-- Engagement -->
+                                <div class="metric-item" id="metricEngage">
+                                    <div class="metric-header">
+                                        <div class="metric-name">🔥 Engagement Potential</div>
+                                        <div class="metric-score">0/100</div>
+                                    </div>
+                                    <div class="metric-bar-bg"><div class="metric-bar-fill" style="width: 0%"></div></div>
+                                </div>
+                                <!-- Clarity -->
+                                <div class="metric-item" id="metricClarity">
+                                    <div class="metric-header">
+                                        <div class="metric-name">👁️ Clarity & Pacing</div>
+                                        <div class="metric-score">0/100</div>
+                                    </div>
+                                    <div class="metric-bar-bg"><div class="metric-bar-fill" style="width: 0%"></div></div>
+                                </div>
+                                <!-- Brand -->
+                                <div class="metric-item" id="metricBrand">
+                                    <div class="metric-header">
+                                        <div class="metric-name">👤 Brand Alignment</div>
+                                        <div class="metric-score">0/100</div>
+                                    </div>
+                                    <div class="metric-bar-bg"><div class="metric-bar-fill" style="width: 0%"></div></div>
+                                </div>
+                            </div>
+                            
+                            <!-- Suggestions -->
+                            <div class="suggestions-container">
+                                <div class="suggestions-header">Actionable Improvements</div>
+                                <div id="suggestionsList">
+                                    <!-- Populated via JS -->
+                                </div>
+                            </div>
+                            
+                        </div>
+                    </div>
+                </div>
+                
+            </div>
+        </div>
+    </main>
+</div>
+
+<script src="/js/utils.js"></script>
+<script>
+    const token = localStorage.getItem('token');
+    if (!token) window.location.href = '/login.html';
+
+    document.addEventListener('DOMContentLoaded', async () => {
+        // Close dropdown when clicking outside
+        document.addEventListener('click', (e) => {
+            if (!e.target.closest('.dropdown')) {
+                document.querySelectorAll('.dropdown-menu').forEach(m => m.classList.remove('show'));
+            }
+        });
+
+        await loadUserData();
+    });
+
+    function toggleSidebar() {
+        document.getElementById('sidebar').classList.toggle('open');
+    }
+
+    async function loadUserData() {
+        try {
+            const res = await fetch('/api/creator/dashboard', { headers: { 'Authorization': `Bearer ${token}` } });
+            const data = await res.json();
+            if (data.success && data.data) {
+                const name = data.data.display_name || 'Creator';
+                document.getElementById('userNameSidebar').textContent = name;
+                document.getElementById('userAvatar').textContent = name.charAt(0).toUpperCase();
+                
+                // Add platforms
+                const platforms = data.data.platforms;
+                if (platforms && platforms.length > 0) {
+                    const sel = document.getElementById('platformInput');
+                    platforms.forEach(p => {
+                        if (![...sel.options].some(opt => opt.value === p.platform_name)) {
+                            sel.innerHTML += `<option value="${p.platform_name}">${p.platform_name}</option>`;
+                        }
+                    });
+                }
+            } else if (res.status === 401) logout();
+        } catch(e) {}
+    }
+
+    async function analyzeContent() {
+        const content = document.getElementById('contentInput').value.trim();
+        if (!content || content.length < 50) {
+            Utils.toast('Please enter more content to analyze.', 'error');
+            return;
+        }
+
+        const btn = document.getElementById('analyzeBtn');
+        const platform = document.getElementById('platformInput').value;
+        const format = document.getElementById('formatInput').value;
+
+        // UI State
+        Utils.btnLoading(btn, true);
+        document.getElementById('analyzerEmpty').classList.add('hidden');
+        document.getElementById('resultsContainer').classList.add('hidden');
+        document.getElementById('analyzerLoading').classList.remove('hidden');
+        document.getElementById('rewriteDropdown').style.display = 'none';
+
+        try {
+            const res = await fetch('/api/ai/analyze', {
+                method: 'POST',
+                headers: { 'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    content: content,
+                    platform: platform,
+                    format: format
+                })
+            });
+            const result = await res.json();
+
+            if (result.success && result.data) {
+                renderResults(result.data);
+            } else {
+                if (res.status === 401) logout();
+                throw new Error(result.error);
+            }
+        } catch (error) {
+            Utils.toast(error.message || 'Analysis failed', 'error');
+            document.getElementById('analyzerLoading').classList.add('hidden');
+            document.getElementById('analyzerEmpty').classList.remove('hidden');
+        }
+
+        Utils.btnLoading(btn, false);
+    }
+
+    function renderResults(data) {
+        document.getElementById('analyzerLoading').classList.add('hidden');
+        document.getElementById('resultsContainer').classList.remove('hidden');
+        document.getElementById('rewriteDropdown').style.display = 'block';
+
+        // Overall Score
+        const overall = data.overall_score;
+        document.getElementById('overallScore').textContent = overall;
+        
+        const circle = document.getElementById('overallScoreCircle');
+        const label = document.getElementById('scoreLabel');
+        
+        circle.className = 'score-circle'; // reset
+        if (overall >= 85) { circle.classList.add('excellent'); label.textContent = 'Excellent Viral Potential'; }
+        else if (overall >= 70) { circle.classList.add('good'); label.textContent = 'Good Potential'; }
+        else if (overall >= 50) { circle.classList.add('fair'); label.textContent = 'Needs Improvement'; }
+        else { circle.classList.add('poor'); label.textContent = 'Poor Performance Likely'; }
+        
+        document.getElementById('scoreDesc').textContent = data.summary || 'Review the metrics below to improve your content.';
+
+        // Metrics
+        updateMetric('metricHook', data.metrics.hook_strength);
+        updateMetric('metricEngage', data.metrics.engagement_potential);
+        updateMetric('metricClarity', data.metrics.clarity);
+        updateMetric('metricBrand', data.metrics.brand_alignment);
+
+        // Suggestions
+        const suggList = document.getElementById('suggestionsList');
+        suggList.innerHTML = '';
+        
+        if (data.improvements && Array.isArray(data.improvements)) {
+            data.improvements.forEach(imp => {
+                let icon = '💡';
+                if (imp.type === 'hook') icon = '🎣';
+                if (imp.type === 'retention') icon = '⏱️';
+                if (imp.type === 'cta') icon = '🎯';
+                
+                suggList.innerHTML += `
+                    <div class="suggestion-item">
+                        <div class="suggestion-icon">${icon}</div>
+                        <div class="suggestion-content">
+                            <h4>${imp.type.charAt(0).toUpperCase() + imp.type.slice(1)} Improvement</h4>
+                            <p>${Utils.escapeHtml(imp.suggestion)}</p>
+                        </div>
+                    </div>
+                `;
+            });
+        }
+    }
+
+    function updateMetric(elementId, score) {
+        const el = document.getElementById(elementId);
+        if (!el) return;
+        
+        el.className = 'metric-item'; // reset
+        if (score >= 85) el.classList.add('metric-excellent');
+        else if (score >= 70) el.classList.add('metric-good');
+        else if (score >= 50) el.classList.add('metric-fair');
+        else el.classList.add('metric-poor');
+        
+        el.querySelector('.metric-score').textContent = score + '/100';
+        
+        // Timeout to allow transition to animate from 0
+        setTimeout(() => {
+            el.querySelector('.metric-bar-fill').style.width = score + '%';
+        }, 100);
+    }
+
+    async function rewriteContent(focus) {
+        document.querySelectorAll('.dropdown-menu').forEach(m => m.classList.remove('show'));
+        
+        const content = document.getElementById('contentInput').value.trim();
+        const platform = document.getElementById('platformInput').value;
+        const format = document.getElementById('formatInput').value;
+        
+        document.getElementById('analyzerLoading').classList.remove('hidden');
+        document.getElementById('resultsContainer').classList.add('hidden');
+        
+        try {
+            const res = await fetch('/api/ai/rewrite', {
+                method: 'POST',
+                headers: { 'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    content: content,
+                    platform: platform,
+                    format: format,
+                    focus: focus
+                })
+            });
+            const result = await res.json();
+
+            if (result.success && result.data && result.data.rewritten_content) {
+                document.getElementById('contentInput').value = result.data.rewritten_content;
+                Utils.toast('Content rewritten successfully!', 'success');
+                // Re-analyze automatically
+                analyzeContent();
+            } else {
+                throw new Error(result.error || 'Failed to rewrite');
+            }
+        } catch (error) {
+            Utils.toast(error.message, 'error');
+            document.getElementById('analyzerLoading').classList.add('hidden');
+            document.getElementById('resultsContainer').classList.remove('hidden');
+        }
+    }
+</script>
+</body>
+</html>
