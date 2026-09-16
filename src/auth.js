@@ -20,7 +20,7 @@ export const authMiddleware = async (c, next) => {
 
   const token = authHeader.split(' ')[1]
   try {
-    const decodedPayload = await verify(token, JWT_SECRET)
+    const decodedPayload = await verify(token, JWT_SECRET, 'HS256')
     c.set('user', decodedPayload)
     await next()
   } catch (e) {
