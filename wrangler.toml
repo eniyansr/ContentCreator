@@ -1,0 +1,8 @@
+name = "creatorchatai"
+main = "src/index.js"
+compatibility_date = "2024-03-20"
+
+[[d1_databases]]
+binding = "DB"
+database_name = "creator_ai_db"
+database_id = "ceff6216-872f-40e8-99a1-e0f6b2099a6c"

@@ -1,0 +1,29 @@
+{
+  "name": "contentcreators",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/eniyansr/ContentCreator.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/eniyansr/ContentCreator/issues"
+  },
+  "homepage": "https://github.com/eniyansr/ContentCreator#readme",
+  "dependencies": {
+    "bcryptjs": "^3.0.3",
+    "hono": "^4.13.8"
+  },
+  "devDependencies": {
+    "@cloudflare/workers-types": "^5.20260916.1",
+    "wrangler": "^4.132.0"
+  }
+}

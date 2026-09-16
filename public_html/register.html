@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register – CreatorAI</title>
+    <style>
+        body { font-family: sans-serif; background: #f4f4f5; display: flex; justify-content: center; align-items: center; min-height: 100vh; margin: 0; padding: 1rem; }
+        .auth-card { background: white; padding: 2rem; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); width: 100%; max-width: 400px; }
+        h1 { text-align: center; color: #111827; }
+        .form-group { margin-bottom: 1rem; }
+        label { display: block; margin-bottom: 0.5rem; color: #374151; font-weight: 500; }
+        input { width: 100%; padding: 0.5rem; border: 1px solid #d1d5db; border-radius: 4px; box-sizing: border-box; }
+        button { width: 100%; padding: 0.75rem; background: #2563eb; color: white; border: none; border-radius: 4px; font-weight: bold; cursor: pointer; margin-top: 1rem; }
+        button:hover { background: #1d4ed8; }
+        .error { color: #dc2626; margin-bottom: 1rem; text-align: center; display: none; }
+        .success { color: #16a34a; margin-bottom: 1rem; text-align: center; display: none; }
+    </style>
+</head>
+<body>
+    <div class="auth-card">
+        <h1>Create Account</h1>
+        <div id="errorMsg" class="error"></div>
+        <div id="successMsg" class="success"></div>
+        <form id="registerForm">
+            <div class="form-group">
+                <label for="full_name">Full Name</label>
+                <input type="text" id="full_name" required>
+            </div>
+            <div class="form-group">
+                <label for="username">Username</label>
+                <input type="text" id="username" required>
+            </div>
+            <div class="form-group">
+                <label for="email">Email</label>
+                <input type="email" id="email" required>
+            </div>
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" id="password" required>
+            </div>
+            <button type="submit">Sign Up</button>
+        </form>
+        <p style="text-align: center; margin-top: 1rem;">
+            <a href="login.html">Already have an account?</a>
+        </p>
+    </div>
+
+    <script>
+        document.getElementById('registerForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const full_name = document.getElementById('full_name').value;
+            const username = document.getElementById('username').value;
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            const errorMsg = document.getElementById('errorMsg');
+            const successMsg = document.getElementById('successMsg');
+            
+            errorMsg.style.display = 'none';
+            successMsg.style.display = 'none';
+
+            try {
+                const res = await fetch('/api/auth/register', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ full_name, username, email, password })
+                });
+                
+                const data = await res.json();
+                if (data.success) {
+                    successMsg.textContent = 'Registration successful! Please login.';
+                    successMsg.style.display = 'block';
+                    document.getElementById('registerForm').reset();
+                    setTimeout(() => window.location.href = 'login.html', 2000);
+                } else {
+                    errorMsg.textContent = data.error || 'Registration failed';
+                    errorMsg.style.display = 'block';
+                }
+            } catch (err) {
+                errorMsg.textContent = 'Network error';
+                errorMsg.style.display = 'block';
+            }
+        });
+    </script>
+</body>
+</html>
