@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard – CreatorAI</title>
+    <meta name="base-url" content="/">
+    <link rel="stylesheet" href="/assets/css/global.css">
+    <link rel="stylesheet" href="/assets/css/dashboard.css">
+    <link rel="stylesheet" href="/assets/css/responsive.css">
+</head>
+<body>
+<div class="app-layout">
+    <!-- Sidebar -->
+    <aside class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <a href="/creator/dashboard.html" class="sidebar-logo">
+                <div class="sidebar-logo-icon">✦</div>
+                CreatorAI
+            </a>
+        </div>
+        <nav class="sidebar-nav">
+            <div class="sidebar-section">
+                <a href="/creator/dashboard.html" class="sidebar-link active">
+                    <span class="sidebar-link-icon">📊</span> Dashboard
+                </a>
+                <a href="/creator/chat.html" class="sidebar-link">
+                    <span class="sidebar-link-icon">💬</span> AI Creator Chat
+                </a>
+                <a href="/creator/ideas.html" class="sidebar-link">
+                    <span class="sidebar-link-icon">💡</span> Content Ideas
+                </a>
+                <a href="/creator/content-generator.html" class="sidebar-link">
+                    <span class="sidebar-link-icon">✍️</span> Generate Content
+                </a>
+                <a href="/creator/repurpose.html" class="sidebar-link">
+                    <span class="sidebar-link-icon">🔄</span> Repurpose
+                </a>
+                <a href="/creator/analyzer.html" class="sidebar-link">
+                    <span class="sidebar-link-icon">🔍</span> Content Analyzer
+                </a>
+            </div>
+            <div class="sidebar-section">
+                <div class="sidebar-section-title">Manage</div>
+                <a href="/creator/analytics.html" class="sidebar-link">
+                    <span class="sidebar-link-icon">📈</span> Analytics
+                </a>
+                <a href="/creator/calendar.html" class="sidebar-link">
+                    <span class="sidebar-link-icon">📅</span> Calendar
+                    <span class="sidebar-link-badge d-none" id="badgeCalendar">0</span>
+                </a>
+                <a href="/creator/library.html" class="sidebar-link">
+                    <span class="sidebar-link-icon">📚</span> Saved Content
+                </a>
+                <a href="/creator/templates.html" class="sidebar-link">
+                    <span class="sidebar-link-icon">📋</span> Templates
+                </a>
+            </div>
+            <div class="sidebar-section">
+                <div class="sidebar-section-title">Settings</div>
+                <a href="/creator/profile.html" class="sidebar-link">
+                    <span class="sidebar-link-icon">👤</span> My Profile
+                </a>
+                <a href="/creator/notifications.html" class="sidebar-link">
+                    <span class="sidebar-link-icon">🔔</span> Notifications
+                    <span class="sidebar-link-badge d-none" id="badgeNotifications">0</span>
+                </a>
+            </div>
+        </nav>
+        <div class="sidebar-footer">
+            <div class="sidebar-user" onclick="document.getElementById('userDropdown').classList.toggle('show')">
+                <div class="avatar avatar-sm" id="userAvatar">U</div>
+                <div class="sidebar-user-info">
+                    <div class="sidebar-user-name" id="userNameSidebar">Loading...</div>
+                    <div class="sidebar-user-role">Creator</div>
+                </div>
+            </div>
+            <div class="dropdown-menu" id="userDropdown" style="bottom: 100%; top: auto; margin-bottom: 8px;">
+                <a href="/creator/profile.html" class="dropdown-item">👤 Profile</a>
+                <a href="#" onclick="logout()" class="dropdown-item" style="color: var(--error);">🚪 Logout</a>
+            </div>
+        </div>
+    </aside>
+
+    <!-- Sidebar overlay for mobile -->
+    <div class="sidebar-overlay" id="sidebarOverlay" onclick="toggleSidebar()"></div>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <header class="top-header">
+            <div class="top-header-left">
+                <button class="menu-toggle" onclick="toggleSidebar()">☰</button>
+                <h2 class="page-title">Dashboard</h2>
+            </div>
+            <div class="top-header-right">
+                <button class="header-notification" onclick="window.location.href='/creator/notifications.html'">
+                    🔔
+                    <span class="notification-dot d-none" id="notificationDot"></span>
+                </button>
+                <a href="/creator/chat.html" class="btn btn-primary btn-sm">💬 Ask CreatorAI</a>
+            </div>
+        </header>
+
+        <div class="page-content" id="dashboardContent" style="display: none;">
+            <!-- Welcome Section -->
+            <div class="welcome-section">
+                <h2 class="welcome-greeting"><span id="greetingText">Welcome</span>, <span id="userNameWelcome"></span>! 👋</h2>
+                <p class="welcome-message">Here's your content creation hub. Let AI help you create amazing content today.</p>
+                <div id="profileCompletionBanner" class="d-none welcome-profile-bar">
+                    <span class="form-label" style="margin: 0;">Profile completion:</span>
+                    <div class="progress-bar">
+                        <div class="progress-bar-fill" id="profileCompletionFill" style="width: 0%"></div>
+                    </div>
+                    <span class="welcome-profile-pct" id="profileCompletionPct">0%</span>
+                    <a href="/creator/profile.html" class="btn btn-sm btn-secondary">Complete Profile</a>
+                </div>
+            </div>
+
+            <!-- Quick Actions -->
+            <div class="quick-actions-grid">
+                <a href="/creator/chat.html" class="quick-action-card">
+                    <div class="quick-action-icon" style="background: rgba(108,92,231,0.15);">💬</div>
+                    <div class="quick-action-info"><h4>Ask CreatorAI</h4><p>Chat with your AI assistant</p></div>
+                </a>
+                <a href="/creator/content-generator.html" class="quick-action-card">
+                    <div class="quick-action-icon" style="background: rgba(0,210,255,0.15);">✍️</div>
+                    <div class="quick-action-info"><h4>Generate Content</h4><p>Create scripts, captions & more</p></div>
+                </a>
+                <a href="/creator/ideas.html" class="quick-action-card">
+                    <div class="quick-action-icon" style="background: rgba(254,202,87,0.15);">💡</div>
+                    <div class="quick-action-info"><h4>Get Ideas</h4><p>AI-powered content ideas</p></div>
+                </a>
+                <a href="/creator/analyzer.html" class="quick-action-card">
+                    <div class="quick-action-icon" style="background: rgba(0,184,148,0.15);">🔍</div>
+                    <div class="quick-action-info"><h4>Analyze Content</h4><p>Score & improve your content</p></div>
+                </a>
+                <a href="/creator/repurpose.html" class="quick-action-card">
+                    <div class="quick-action-icon" style="background: rgba(253,121,168,0.15);">🔄</div>
+                    <div class="quick-action-info"><h4>Repurpose</h4><p>Multi-platform content</p></div>
+                </a>
+                <a href="/creator/calendar.html" class="quick-action-card">
+                    <div class="quick-action-icon" style="background: rgba(162,155,254,0.15);">📅</div>
+                    <div class="quick-action-info"><h4>Content Calendar</h4><p>Plan your schedule</p></div>
+                </a>
+                <a href="/creator/analytics.html" class="quick-action-card">
+                    <div class="quick-action-icon" style="background: rgba(255,107,107,0.15);">📈</div>
+                    <div class="quick-action-info"><h4>Analytics</h4><p>Track your performance</p></div>
+                </a>
+                <a href="/creator/library.html" class="quick-action-card">
+                    <div class="quick-action-icon" style="background: rgba(0,136,204,0.15);">📚</div>
+                    <div class="quick-action-info"><h4>Content Library</h4><p>Your saved content</p></div>
+                </a>
+            </div>
+
+            <!-- Stats -->
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-card-label">Conversations</div>
+                    <div class="stat-card-value" id="statChats">0</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-card-label">Content Ideas</div>
+                    <div class="stat-card-value" id="statIdeas">0</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-card-label">Saved Content</div>
+                    <div class="stat-card-value" id="statSaved">0</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-card-label">Upcoming Posts</div>
+                    <div class="stat-card-value" id="statCalendar">0</div>
+                </div>
+            </div>
+
+            <!-- Two Column Grid -->
+            <div class="dashboard-grid">
+                <!-- Recent Conversations -->
+                <div class="dashboard-card">
+                    <div class="dashboard-card-header">
+                        <h3 class="dashboard-card-title">Recent Conversations</h3>
+                        <a href="/creator/chat.html" class="dashboard-card-action">View All →</a>
+                    </div>
+                    <div id="recentChatsContainer">
+                        <div class="empty-state" style="padding: var(--space-8) 0;">
+                            <p style="font-size: var(--font-size-sm);">Loading...</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Platforms Overview -->
+                <div class="dashboard-card">
+                    <div class="dashboard-card-header">
+                        <h3 class="dashboard-card-title">Your Platforms</h3>
+                        <a href="/creator/profile.html" class="dashboard-card-action">Manage →</a>
+                    </div>
+                    <div id="platformsContainer">
+                        <div class="empty-state" style="padding: var(--space-8) 0;">
+                            <p style="font-size: var(--font-size-sm);">Loading...</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Recent Ideas -->
+                <div class="dashboard-card">
+                    <div class="dashboard-card-header">
+                        <h3 class="dashboard-card-title">Recent Ideas</h3>
+                        <a href="/creator/ideas.html" class="dashboard-card-action">View All →</a>
+                    </div>
+                    <div id="recentIdeasContainer">
+                        <div class="empty-state" style="padding: var(--space-8) 0;">
+                            <p style="font-size: var(--font-size-sm);">Loading...</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- AI Recommendations -->
+                <div class="dashboard-card">
+                    <div class="dashboard-card-header">
+                        <h3 class="dashboard-card-title">AI Recommendations</h3>
+                    </div>
+                    <div style="padding: var(--space-4); background: var(--bg-tertiary); border-radius: var(--radius-lg);">
+                        <p style="font-size: var(--font-size-sm); color: var(--text-secondary); line-height: 1.7;">
+                            💡 Based on your profile as a <strong id="aiRecType">creator</strong> in the <strong id="aiRecNiche">niche</strong>, 
+                            try using the <a href="/creator/content-generator.html">Content Generator</a> to create platform-optimized content.
+                        </p>
+                    </div>
+                    <div style="margin-top: var(--space-4); padding: var(--space-4); background: var(--bg-tertiary); border-radius: var(--radius-lg);">
+                        <p style="font-size: var(--font-size-sm); color: var(--text-secondary); line-height: 1.7;">
+                            📅 Stay consistent! Use the <a href="/creator/calendar.html">Content Calendar</a> to plan your posts ahead of time.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+</div>
+
+<script src="/assets/js/utils.js"></script>
+<script>
+    function toggleSidebar() {
+        document.getElementById('sidebar').classList.toggle('open');
+        document.getElementById('sidebarOverlay').classList.toggle('active');
+    }
+
+    document.addEventListener('click', (e) => {
+        if (!e.target.closest('.sidebar-user') && !e.target.closest('#userDropdown')) {
+            document.getElementById('userDropdown')?.classList.remove('show');
+        }
+    });
+
+    function logout() {
+        localStorage.removeItem('token');
+        window.location.href = '/login.html';
+    }
+
+    // Fetch and populate dashboard
+    async function loadDashboard() {
+        const token = localStorage.getItem('token');
+        if (!token) {
+            window.location.href = '/login.html';
+            return;
+        }
+
+        try {
+            const res = await fetch('/api/creator/dashboard', {
+                headers: { 'Authorization': `Bearer ${token}` }
+            });
+            const data = await res.json();
+            
+            if (!data.success) {
+                if (res.status === 401) logout();
+                return;
+            }
+
+            if (!data.profile_completed) {
+                // In Phase 3, this will redirect to /onboarding.html
+                console.log("Profile not completed, but keeping on dashboard for now.");
+            }
+            
+            const p = data.data;
+
+            // Header/Greeting
+            const hours = new Date().getHours();
+            let greeting = 'Good evening';
+            if (hours < 12) greeting = 'Good morning';
+            else if (hours < 17) greeting = 'Good afternoon';
+            
+            document.getElementById('greetingText').textContent = greeting;
+            document.getElementById('userNameWelcome').textContent = p.display_name;
+            document.getElementById('userNameSidebar').textContent = p.display_name;
+            document.getElementById('userAvatar').textContent = p.display_name.charAt(0).toUpperCase();
+
+            // Stats
+            document.getElementById('statChats').textContent = p.counts.chats;
+            document.getElementById('statIdeas').textContent = p.counts.ideas;
+            document.getElementById('statSaved').textContent = p.counts.saved;
+            document.getElementById('statCalendar').textContent = p.counts.calendar;
+
+            if (p.counts.calendar > 0) {
+                const badge = document.getElementById('badgeCalendar');
+                badge.textContent = p.counts.calendar;
+                badge.classList.remove('d-none');
+            }
+
+            if (p.counts.unread_notifications > 0) {
+                const badge = document.getElementById('badgeNotifications');
+                badge.textContent = p.counts.unread_notifications;
+                badge.classList.remove('d-none');
+                document.getElementById('notificationDot').classList.remove('d-none');
+            }
+
+            // Recent Chats
+            let chatsHtml = p.recentChats.length === 0 
+                ? `<div class="empty-state" style="padding: var(--space-8) 0;">
+                    <p style="font-size: var(--font-size-sm);">No conversations yet. Start chatting with CreatorAI!</p>
+                    <a href="/creator/chat.html" class="btn btn-primary btn-sm mt-4">Start Chat</a>
+                   </div>`
+                : `<ul class="recent-list">` + p.recentChats.map(c => `
+                    <li class="recent-item">
+                        <div class="recent-item-icon">💬</div>
+                        <div class="recent-item-info">
+                            <div class="recent-item-title">${c.title}</div>
+                            <div class="recent-item-meta">${c.last_message_at || 'No messages'}</div>
+                        </div>
+                    </li>
+                  `).join('') + `</ul>`;
+            document.getElementById('recentChatsContainer').innerHTML = chatsHtml;
+
+            // Platforms
+            let platformsHtml = p.platforms.length === 0 
+                ? `<div class="empty-state" style="padding: var(--space-8) 0;">
+                    <p style="font-size: var(--font-size-sm);">No platforms added yet.</p>
+                    <a href="/creator/profile.html" class="btn btn-secondary btn-sm mt-4">Add Platforms</a>
+                   </div>`
+                : `<ul class="recent-list">` + p.platforms.map(pl => `
+                    <li class="recent-item">
+                        <div class="recent-item-icon">📱</div>
+                        <div class="recent-item-info">
+                            <div class="recent-item-title">${pl.platform_name}</div>
+                            <div class="recent-item-meta">${pl.followers ? pl.followers + ' followers' : 'No data'}</div>
+                        </div>
+                    </li>
+                  `).join('') + `</ul>`;
+            document.getElementById('platformsContainer').innerHTML = platformsHtml;
+
+            // Recent Ideas
+            let ideasHtml = p.recentIdeas.length === 0 
+                ? `<div class="empty-state" style="padding: var(--space-8) 0;">
+                    <p style="font-size: var(--font-size-sm);">Generate content ideas with AI!</p>
+                    <a href="/creator/ideas.html" class="btn btn-primary btn-sm mt-4">Get Ideas</a>
+                   </div>`
+                : `<ul class="recent-list">` + p.recentIdeas.map(i => `
+                    <li class="recent-item">
+                        <div class="recent-item-icon">💡</div>
+                        <div class="recent-item-info">
+                            <div class="recent-item-title">${i.title}</div>
+                            <div class="recent-item-meta">${i.platform || 'General'} · ${i.status}</div>
+                        </div>
+                    </li>
+                  `).join('') + `</ul>`;
+            document.getElementById('recentIdeasContainer').innerHTML = ideasHtml;
+
+            // AI Recommendations
+            if (p.profile) {
+                document.getElementById('aiRecNiche').textContent = p.profile.primary_niche || 'your niche';
+                try {
+                    const types = JSON.parse(p.profile.creator_types || '[]');
+                    if (types.length > 0) document.getElementById('aiRecType').textContent = types[0];
+                } catch(e) {}
+            }
+
+            document.getElementById('dashboardContent').style.display = 'block';
+
+        } catch (error) {
+            console.error(error);
+        }
+    }
+
+    document.addEventListener('DOMContentLoaded', loadDashboard);
+</script>
+</body>
+</html>
