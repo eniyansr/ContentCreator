@@ -1,0 +1,387 @@
+/* ============================================
+   CreatorAI - Onboarding Wizard Styles
+   ============================================ */
+
+.onboarding-page {
+    min-height: 100vh;
+    background: var(--bg-primary);
+    display: flex;
+    flex-direction: column;
+}
+
+.onboarding-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: var(--space-4) var(--space-8);
+    border-bottom: 1px solid var(--border-light);
+    background: var(--bg-secondary);
+}
+
+.onboarding-logo {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    font-size: var(--font-size-lg);
+    font-weight: 800;
+    color: var(--text-primary);
+    text-decoration: none;
+}
+
+.onboarding-logo-icon {
+    width: 36px;
+    height: 36px;
+    background: var(--gradient-primary);
+    border-radius: var(--radius-md);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.onboarding-progress-info {
+    font-size: var(--font-size-sm);
+    color: var(--text-tertiary);
+}
+
+.onboarding-progress-info strong {
+    color: var(--primary-light);
+}
+
+.onboarding-skip {
+    font-size: var(--font-size-sm);
+    color: var(--text-muted);
+    cursor: pointer;
+    background: none;
+    border: none;
+}
+
+.onboarding-skip:hover {
+    color: var(--text-secondary);
+}
+
+/* Progress Bar */
+.onboarding-progress {
+    padding: 0 var(--space-8);
+    background: var(--bg-secondary);
+    padding-bottom: var(--space-4);
+}
+
+.onboarding-progress-bar {
+    width: 100%;
+    height: 6px;
+    background: var(--bg-tertiary);
+    border-radius: var(--radius-full);
+    overflow: hidden;
+}
+
+.onboarding-progress-fill {
+    height: 100%;
+    background: var(--gradient-primary);
+    border-radius: var(--radius-full);
+    transition: width var(--transition-slow);
+}
+
+/* Steps indicator */
+.onboarding-steps {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-2);
+    padding: var(--space-4) var(--space-8);
+    background: var(--bg-secondary);
+    border-bottom: 1px solid var(--border-light);
+    overflow-x: auto;
+}
+
+.onboarding-step-dot {
+    width: 32px;
+    height: 32px;
+    border-radius: var(--radius-full);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: var(--font-size-xs);
+    font-weight: 700;
+    background: var(--bg-tertiary);
+    color: var(--text-muted);
+    border: 2px solid transparent;
+    transition: all var(--transition);
+    flex-shrink: 0;
+}
+
+.onboarding-step-dot.active {
+    background: var(--primary);
+    color: white;
+    border-color: var(--primary);
+    box-shadow: 0 0 12px rgba(108, 92, 231, 0.4);
+}
+
+.onboarding-step-dot.completed {
+    background: var(--success);
+    color: white;
+    border-color: var(--success);
+}
+
+.onboarding-step-connector {
+    width: 24px;
+    height: 2px;
+    background: var(--border);
+    flex-shrink: 0;
+}
+
+.onboarding-step-connector.completed {
+    background: var(--success);
+}
+
+/* Content Area */
+.onboarding-body {
+    flex: 1;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    padding: var(--space-8);
+    overflow-y: auto;
+}
+
+.onboarding-content {
+    width: 100%;
+    max-width: 800px;
+    background: var(--bg-card);
+    border: 1px solid var(--border-light);
+    border-radius: var(--radius-2xl);
+    padding: var(--space-10);
+    animation: slideInUp 0.4s ease;
+}
+
+.onboarding-content h2 {
+    font-size: var(--font-size-2xl);
+    font-weight: 800;
+    margin-bottom: var(--space-2);
+}
+
+.onboarding-content .step-description {
+    font-size: var(--font-size-base);
+    color: var(--text-tertiary);
+    margin-bottom: var(--space-8);
+    line-height: 1.6;
+}
+
+/* Form sections within steps */
+.step-section {
+    margin-bottom: var(--space-8);
+}
+
+.step-section-title {
+    font-size: var(--font-size-lg);
+    font-weight: 700;
+    margin-bottom: var(--space-4);
+    color: var(--text-primary);
+}
+
+/* Platform Selection Cards */
+.platform-select-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+    gap: var(--space-3);
+}
+
+.platform-select-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--space-2);
+    padding: var(--space-4);
+    background: var(--bg-tertiary);
+    border: 2px solid transparent;
+    border-radius: var(--radius-lg);
+    cursor: pointer;
+    transition: all var(--transition-fast);
+    text-align: center;
+}
+
+.platform-select-card:hover {
+    border-color: var(--border);
+    background: var(--bg-card-hover);
+}
+
+.platform-select-card.selected {
+    border-color: var(--primary);
+    background: rgba(108, 92, 231, 0.1);
+}
+
+.platform-select-card input {
+    display: none;
+}
+
+.platform-select-icon {
+    font-size: 2rem;
+}
+
+.platform-select-name {
+    font-size: var(--font-size-sm);
+    font-weight: 600;
+    color: var(--text-secondary);
+}
+
+/* Platform detail form (shown when platform selected) */
+.platform-detail {
+    background: var(--bg-tertiary);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: var(--space-5);
+    margin-bottom: var(--space-4);
+    animation: slideInUp 0.3s ease;
+}
+
+.platform-detail-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: var(--space-4);
+}
+
+.platform-detail-title {
+    font-size: var(--font-size-base);
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+}
+
+.platform-detail-remove {
+    background: none;
+    border: none;
+    color: var(--error);
+    cursor: pointer;
+    font-size: var(--font-size-sm);
+}
+
+.platform-detail .form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-4);
+}
+
+/* Multi-select chips */
+.multi-chip-group {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+}
+
+.multi-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+    padding: var(--space-2) var(--space-4);
+    font-size: var(--font-size-sm);
+    color: var(--text-secondary);
+    background: var(--bg-tertiary);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-full);
+    cursor: pointer;
+    transition: all var(--transition-fast);
+    user-select: none;
+}
+
+.multi-chip:hover {
+    border-color: var(--primary);
+    color: var(--primary-light);
+}
+
+.multi-chip.selected {
+    background: var(--primary);
+    border-color: var(--primary);
+    color: white;
+}
+
+.multi-chip input[type="checkbox"] {
+    display: none;
+}
+
+/* Scale selector (1-5) */
+.scale-selector {
+    display: flex;
+    gap: var(--space-2);
+}
+
+.scale-option {
+    flex: 1;
+    text-align: center;
+    padding: var(--space-3) var(--space-2);
+    background: var(--bg-tertiary);
+    border: 2px solid transparent;
+    border-radius: var(--radius-lg);
+    cursor: pointer;
+    transition: all var(--transition-fast);
+}
+
+.scale-option:hover {
+    border-color: var(--border);
+}
+
+.scale-option.selected {
+    border-color: var(--primary);
+    background: rgba(108, 92, 231, 0.15);
+}
+
+.scale-option input {
+    display: none;
+}
+
+.scale-value {
+    font-size: var(--font-size-xl);
+    font-weight: 800;
+    color: var(--text-primary);
+}
+
+.scale-label {
+    font-size: var(--font-size-xs);
+    color: var(--text-tertiary);
+    margin-top: var(--space-1);
+}
+
+/* Navigation Buttons */
+.onboarding-nav {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: var(--space-8);
+    padding-top: var(--space-6);
+    border-top: 1px solid var(--border-light);
+}
+
+.onboarding-nav .btn {
+    min-width: 140px;
+}
+
+@media (max-width: 768px) {
+    .onboarding-body {
+        padding: var(--space-4);
+    }
+
+    .onboarding-content {
+        padding: var(--space-6);
+    }
+
+    .platform-select-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+
+    .platform-detail .form-row {
+        grid-template-columns: 1fr;
+    }
+
+    .onboarding-steps {
+        padding: var(--space-3) var(--space-4);
+    }
+
+    .onboarding-step-dot {
+        width: 28px;
+        height: 28px;
+    }
+
+    .scale-selector {
+        flex-wrap: wrap;
+    }
+}

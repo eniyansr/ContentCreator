@@ -4,44 +4,88 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login – CreatorAI</title>
+    <meta name="description" content="Log in to your CreatorAI account to access your personalized AI content creation tools.">
+    <meta name="base-url" content="/">
+    <link rel="stylesheet" href="/assets/css/global.css">
+    <link rel="stylesheet" href="/assets/css/auth.css">
+    <link rel="stylesheet" href="/assets/css/responsive.css">
     <style>
-        body { font-family: sans-serif; background: #f4f4f5; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; }
-        .auth-card { background: white; padding: 2rem; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); width: 100%; max-width: 400px; }
-        h1 { text-align: center; color: #111827; }
-        .form-group { margin-bottom: 1rem; }
-        label { display: block; margin-bottom: 0.5rem; color: #374151; font-weight: 500; }
-        input { width: 100%; padding: 0.5rem; border: 1px solid #d1d5db; border-radius: 4px; box-sizing: border-box; }
-        button { width: 100%; padding: 0.75rem; background: #2563eb; color: white; border: none; border-radius: 4px; font-weight: bold; cursor: pointer; margin-top: 1rem; }
-        button:hover { background: #1d4ed8; }
-        .error { color: #dc2626; margin-bottom: 1rem; text-align: center; display: none; }
+        .auth-alert-error {
+            background-color: #fee2e2;
+            color: #b91c1c;
+            padding: 10px;
+            border-radius: 4px;
+            margin-bottom: 15px;
+            font-size: 14px;
+        }
     </style>
 </head>
 <body>
-    <div class="auth-card">
-        <h1>CreatorAI Login</h1>
-        <div id="errorMsg" class="error"></div>
-        <form id="loginForm">
-            <div class="form-group">
-                <label for="email">Email</label>
-                <input type="email" id="email" required>
+    <div class="auth-page">
+        <div class="auth-container">
+            <div class="auth-card">
+                <div class="auth-header">
+                    <a href="/" class="auth-logo">
+                        <div class="auth-logo-icon">✦</div>
+                        CreatorAI
+                    </a>
+                    <h1 class="auth-title">Welcome Back</h1>
+                    <p class="auth-subtitle">Sign in to your creator account</p>
+                </div>
+
+                <div id="authAlert" class="auth-alert d-none"></div>
+
+                <form id="loginForm" class="auth-form" novalidate>
+                    <div class="form-group">
+                        <label class="form-label" for="email">Email or Username <span class="required">*</span></label>
+                        <input type="text" id="email" name="email" class="form-input" placeholder="Enter your email or username" required autocomplete="username">
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" for="password">Password <span class="required">*</span></label>
+                        <div class="password-field" style="position: relative;">
+                            <input type="password" id="password" name="password" class="form-input" placeholder="Enter your password" required autocomplete="current-password">
+                            <button type="button" class="password-toggle" onclick="togglePassword('password', this)" aria-label="Toggle password visibility" style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); background: none; border: none; cursor: pointer;">👁️</button>
+                        </div>
+                    </div>
+
+                    <div class="auth-options">
+                        <label class="form-check">
+                            <input type="checkbox" name="remember" value="1">
+                            <span class="form-check-label">Remember me</span>
+                        </label>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary btn-lg" id="loginBtn" style="width: 100%; margin-top: 20px;">
+                        Sign In
+                    </button>
+                </form>
+
+                <div class="auth-footer" style="text-align: center; margin-top: 20px; font-size: 14px;">
+                    <p>Don't have an account? <a href="/register.html">Create Account</a></p>
+                </div>
             </div>
-            <div class="form-group">
-                <label for="password">Password</label>
-                <input type="password" id="password" required>
-            </div>
-            <button type="submit">Sign In</button>
-        </form>
-        <p style="text-align: center; margin-top: 1rem;">
-            <a href="register.html">Create an Account</a>
-        </p>
+        </div>
     </div>
 
+    <script src="/assets/js/utils.js"></script>
     <script>
+        function togglePassword(fieldId, btn) {
+            const field = document.getElementById(fieldId);
+            if (field.type === 'password') {
+                field.type = 'text';
+                btn.textContent = '🙈';
+            } else {
+                field.type = 'password';
+                btn.textContent = '👁️';
+            }
+        }
+
         document.getElementById('loginForm').addEventListener('submit', async (e) => {
             e.preventDefault();
             const email = document.getElementById('email').value;
             const password = document.getElementById('password').value;
-            const errorMsg = document.getElementById('errorMsg');
+            const alert = document.getElementById('authAlert');
             
             try {
                 const res = await fetch('/api/auth/login', {
@@ -55,12 +99,14 @@
                     localStorage.setItem('token', data.token);
                     window.location.href = data.redirect || '/';
                 } else {
-                    errorMsg.textContent = data.error || 'Login failed';
-                    errorMsg.style.display = 'block';
+                    alert.textContent = data.error || 'Login failed';
+                    alert.classList.remove('d-none');
+                    alert.classList.add('auth-alert-error');
                 }
             } catch (err) {
-                errorMsg.textContent = 'Network error';
-                errorMsg.style.display = 'block';
+                alert.textContent = 'Network error';
+                alert.classList.remove('d-none');
+                alert.classList.add('auth-alert-error');
             }
         });
     </script>

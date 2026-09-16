@@ -3,82 +3,176 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Register – CreatorAI</title>
+    <title>Create Account – CreatorAI</title>
+    <meta name="description" content="Create your free CreatorAI account and start generating AI-powered content.">
+    <meta name="base-url" content="/">
+    <link rel="stylesheet" href="/assets/css/global.css">
+    <link rel="stylesheet" href="/assets/css/auth.css">
+    <link rel="stylesheet" href="/assets/css/responsive.css">
     <style>
-        body { font-family: sans-serif; background: #f4f4f5; display: flex; justify-content: center; align-items: center; min-height: 100vh; margin: 0; padding: 1rem; }
-        .auth-card { background: white; padding: 2rem; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); width: 100%; max-width: 400px; }
-        h1 { text-align: center; color: #111827; }
-        .form-group { margin-bottom: 1rem; }
-        label { display: block; margin-bottom: 0.5rem; color: #374151; font-weight: 500; }
-        input { width: 100%; padding: 0.5rem; border: 1px solid #d1d5db; border-radius: 4px; box-sizing: border-box; }
-        button { width: 100%; padding: 0.75rem; background: #2563eb; color: white; border: none; border-radius: 4px; font-weight: bold; cursor: pointer; margin-top: 1rem; }
-        button:hover { background: #1d4ed8; }
-        .error { color: #dc2626; margin-bottom: 1rem; text-align: center; display: none; }
-        .success { color: #16a34a; margin-bottom: 1rem; text-align: center; display: none; }
+        .auth-alert.error {
+            background-color: #fee2e2;
+            color: #b91c1c;
+            padding: 10px;
+            border-radius: 4px;
+            margin-bottom: 15px;
+            font-size: 14px;
+        }
+        .auth-alert.success {
+            background-color: #dcfce7;
+            color: #15803d;
+            padding: 10px;
+            border-radius: 4px;
+            margin-bottom: 15px;
+            font-size: 14px;
+        }
     </style>
 </head>
 <body>
-    <div class="auth-card">
-        <h1>Create Account</h1>
-        <div id="errorMsg" class="error"></div>
-        <div id="successMsg" class="success"></div>
-        <form id="registerForm">
-            <div class="form-group">
-                <label for="full_name">Full Name</label>
-                <input type="text" id="full_name" required>
+    <div class="auth-page">
+        <div class="auth-container" style="max-width: 520px;">
+            <div class="auth-card">
+                <div class="auth-header">
+                    <a href="/" class="auth-logo">
+                        <div class="auth-logo-icon">✦</div>
+                        CreatorAI
+                    </a>
+                    <h1 class="auth-title">Create Your Account</h1>
+                    <p class="auth-subtitle">Start your personalized AI content creation journey</p>
+                </div>
+
+                <div id="authAlert" class="auth-alert d-none"></div>
+
+                <form id="registerForm" class="auth-form" novalidate>
+                    <div class="form-group">
+                        <label class="form-label" for="full_name">Full Name <span class="required">*</span></label>
+                        <input type="text" id="full_name" name="full_name" class="form-input" placeholder="Enter your full name" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" for="username">Username <span class="required">*</span></label>
+                        <input type="text" id="username" name="username" class="form-input" placeholder="Choose a username" required>
+                        <span class="form-hint">3-30 characters. Letters, numbers, and underscores only.</span>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" for="email">Email Address <span class="required">*</span></label>
+                        <input type="email" id="email" name="email" class="form-input" placeholder="Enter your email address" required autocomplete="email">
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" for="password">Password <span class="required">*</span></label>
+                        <div class="password-field" style="position: relative;">
+                            <input type="password" id="password" name="password" class="form-input" placeholder="Create a strong password" required autocomplete="new-password">
+                            <button type="button" class="password-toggle" onclick="togglePassword('password', this)" style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); background: none; border: none; cursor: pointer;">👁️</button>
+                        </div>
+                        <div class="password-strength" id="passwordStrength">
+                            <div class="password-strength-bar" id="str1"></div>
+                            <div class="password-strength-bar" id="str2"></div>
+                            <div class="password-strength-bar" id="str3"></div>
+                            <div class="password-strength-bar" id="str4"></div>
+                        </div>
+                        <span class="password-strength-text form-hint" id="passwordStrengthText">Minimum 8 characters with uppercase, lowercase, number, and special character.</span>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary btn-lg" id="registerBtn" style="width: 100%; margin-top: 20px;">
+                        Create Account
+                    </button>
+                </form>
+
+                <div class="auth-footer" style="text-align: center; margin-top: 20px; font-size: 14px;">
+                    <p>Already have an account? <a href="/login.html">Sign In</a></p>
+                </div>
             </div>
-            <div class="form-group">
-                <label for="username">Username</label>
-                <input type="text" id="username" required>
-            </div>
-            <div class="form-group">
-                <label for="email">Email</label>
-                <input type="email" id="email" required>
-            </div>
-            <div class="form-group">
-                <label for="password">Password</label>
-                <input type="password" id="password" required>
-            </div>
-            <button type="submit">Sign Up</button>
-        </form>
-        <p style="text-align: center; margin-top: 1rem;">
-            <a href="login.html">Already have an account?</a>
-        </p>
+        </div>
     </div>
 
+    <script src="/assets/js/utils.js"></script>
     <script>
+        function togglePassword(fieldId, btn) {
+            const field = document.getElementById(fieldId);
+            field.type = field.type === 'password' ? 'text' : 'password';
+            btn.textContent = field.type === 'password' ? '👁️' : '🙈';
+        }
+
+        // Password strength indicator
+        document.getElementById('password').addEventListener('input', function() {
+            const pwd = this.value;
+            let strength = 0;
+            if (pwd.length >= 8) strength++;
+            if (/[A-Z]/.test(pwd)) strength++;
+            if (/[0-9]/.test(pwd)) strength++;
+            if (/[!@#$%^&*(),.?":{}|<>]/.test(pwd)) strength++;
+
+            const levels = ['weak', 'fair', 'good', 'strong'];
+            const texts = ['Weak', 'Fair', 'Good', 'Strong'];
+            const colors = ['var(--error)', 'var(--warning)', 'var(--accent-4)', 'var(--success)'];
+
+            for (let i = 1; i <= 4; i++) {
+                const bar = document.getElementById('str' + i);
+                bar.className = 'password-strength-bar';
+                if (i <= strength) {
+                    bar.classList.add(levels[strength - 1]);
+                }
+            }
+
+            const text = document.getElementById('passwordStrengthText');
+            if (pwd.length > 0) {
+                text.textContent = 'Password strength: ' + (texts[strength - 1] || 'Very Weak');
+                text.style.color = colors[strength - 1] || 'var(--error)';
+            } else {
+                text.textContent = 'Minimum 8 characters with uppercase, lowercase, number, and special character.';
+                text.style.color = '';
+            }
+        });
+
+        // Form submission
         document.getElementById('registerForm').addEventListener('submit', async (e) => {
             e.preventDefault();
-            const full_name = document.getElementById('full_name').value;
-            const username = document.getElementById('username').value;
-            const email = document.getElementById('email').value;
-            const password = document.getElementById('password').value;
-            const errorMsg = document.getElementById('errorMsg');
-            const successMsg = document.getElementById('successMsg');
-            
-            errorMsg.style.display = 'none';
-            successMsg.style.display = 'none';
+            const btn = document.getElementById('registerBtn');
+            const alert = document.getElementById('authAlert');
+
+            btn.disabled = true;
+            btn.textContent = 'Creating...';
+            alert.classList.add('d-none');
+
+            const formData = {
+                full_name: document.getElementById('full_name').value.trim(),
+                username: document.getElementById('username').value.trim(),
+                email: document.getElementById('email').value.trim(),
+                password: document.getElementById('password').value,
+            };
 
             try {
                 const res = await fetch('/api/auth/register', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ full_name, username, email, password })
+                    body: JSON.stringify(formData)
                 });
                 
                 const data = await res.json();
+                
                 if (data.success) {
-                    successMsg.textContent = 'Registration successful! Please login.';
-                    successMsg.style.display = 'block';
-                    document.getElementById('registerForm').reset();
-                    setTimeout(() => window.location.href = 'login.html', 2000);
+                    alert.className = 'auth-alert success';
+                    alert.textContent = '✓ Registration successful! Redirecting...';
+                    alert.classList.remove('d-none');
+                    
+                    setTimeout(() => {
+                        window.location.href = '/login.html';
+                    }, 1500);
                 } else {
-                    errorMsg.textContent = data.error || 'Registration failed';
-                    errorMsg.style.display = 'block';
+                    alert.className = 'auth-alert error';
+                    alert.textContent = '✕ ' + (data.error || 'Registration failed.');
+                    alert.classList.remove('d-none');
+                    btn.disabled = false;
+                    btn.textContent = 'Create Account';
                 }
-            } catch (err) {
-                errorMsg.textContent = 'Network error';
-                errorMsg.style.display = 'block';
+            } catch (error) {
+                alert.className = 'auth-alert error';
+                alert.textContent = '✕ Network error. Please try again.';
+                alert.classList.remove('d-none');
+                btn.disabled = false;
+                btn.textContent = 'Create Account';
             }
         });
     </script>

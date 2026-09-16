@@ -1,0 +1,212 @@
+/* ============================================
+   CreatorAI - Content Repurposer Styles
+   ============================================ */
+
+.repurpose-layout {
+    display: flex;
+    gap: var(--space-6);
+    height: calc(100vh - var(--header-height) - var(--space-16));
+    min-height: 700px;
+}
+
+/* Source Panel (Left) */
+.repurpose-source-panel {
+    flex: 1;
+    background: var(--bg-card);
+    border: 1px solid var(--border-light);
+    border-radius: var(--radius-xl);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    min-width: 0;
+}
+
+.repurpose-panel-header {
+    padding: var(--space-4) var(--space-5);
+    border-bottom: 1px solid var(--border-light);
+    background: var(--bg-tertiary);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.repurpose-panel-title {
+    font-size: var(--font-size-base);
+    font-weight: 700;
+}
+
+.repurpose-source-body {
+    flex: 1;
+    padding: var(--space-5);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+    overflow-y: auto;
+}
+
+.repurpose-textarea {
+    flex: 1;
+    width: 100%;
+    resize: none;
+    padding: var(--space-4);
+    background: var(--bg-primary);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    font-family: var(--font-family);
+    font-size: var(--font-size-sm);
+    line-height: 1.6;
+    color: var(--text-primary);
+    min-height: 250px;
+}
+
+.repurpose-textarea:focus {
+    outline: none;
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px var(--primary-glow);
+}
+
+.platform-checkboxes {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--space-3);
+}
+
+.platform-checkbox-card {
+    background: var(--bg-tertiary);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    padding: var(--space-3);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    transition: all var(--transition-fast);
+}
+
+.platform-checkbox-card:hover {
+    border-color: var(--primary-light);
+}
+
+.platform-checkbox-card.selected {
+    background: rgba(108, 92, 231, 0.1);
+    border-color: var(--primary);
+}
+
+/* Results Panel (Right) */
+.repurpose-results-panel {
+    flex: 1;
+    background: var(--bg-card);
+    border: 1px solid var(--border-light);
+    border-radius: var(--radius-xl);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    min-width: 0;
+}
+
+.repurpose-results-body {
+    flex: 1;
+    background: var(--bg-secondary);
+    padding: var(--space-5);
+    overflow-y: auto;
+    position: relative;
+}
+
+.repurposed-item {
+    background: var(--bg-card);
+    border: 1px solid var(--border-light);
+    border-radius: var(--radius-lg);
+    margin-bottom: var(--space-5);
+    overflow: hidden;
+}
+
+.repurposed-item:last-child {
+    margin-bottom: 0;
+}
+
+.repurposed-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: var(--space-3) var(--space-4);
+    background: var(--bg-tertiary);
+    border-bottom: 1px solid var(--border-light);
+}
+
+.repurposed-platform {
+    font-size: var(--font-size-sm);
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+}
+
+.repurposed-content {
+    padding: var(--space-4);
+    font-size: var(--font-size-sm);
+    line-height: 1.6;
+    color: var(--text-primary);
+}
+
+.repurposed-content p {
+    margin-bottom: var(--space-3);
+}
+
+.repurposed-content p:last-child {
+    margin-bottom: 0;
+}
+
+/* Loading & Empty States */
+.repurpose-loading {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: var(--bg-secondary);
+    z-index: 10;
+}
+
+.repurpose-loading.hidden {
+    display: none;
+}
+
+.repurpose-empty {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    background: var(--bg-secondary);
+    padding: var(--space-8);
+    z-index: 5;
+}
+
+.repurpose-empty.hidden {
+    display: none;
+}
+
+.repurpose-empty-icon {
+    font-size: 4rem;
+    margin-bottom: var(--space-4);
+    opacity: 0.3;
+}
+
+@media (max-width: 1024px) {
+    .repurpose-layout {
+        flex-direction: column;
+        height: auto;
+    }
+    .platform-checkboxes {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 600px) {
+    .platform-checkboxes {
+        grid-template-columns: 1fr;
+    }
+}
