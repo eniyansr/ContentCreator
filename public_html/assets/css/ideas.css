@@ -118,8 +118,10 @@
 }
 
 .idea-card {
-    background: var(--bg-card);
-    border: 1px solid var(--border-light);
+    background: rgba(18, 18, 38, 0.5);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.05);
     border-radius: var(--radius-lg);
     padding: var(--space-5);
     transition: all var(--transition);
@@ -128,9 +130,10 @@
 }
 
 .idea-card:hover {
-    border-color: var(--primary);
-    transform: translateY(-2px);
-    box-shadow: var(--shadow-md);
+    border-color: var(--accent);
+    background: rgba(26, 26, 50, 0.8);
+    transform: translateY(-4px);
+    box-shadow: 0 10px 25px rgba(0, 240, 255, 0.15);
 }
 
 .idea-header {

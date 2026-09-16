@@ -12,12 +12,15 @@
 /* Input Area (Left) */
 .analyzer-input-panel {
     flex: 1;
-    background: var(--bg-card);
-    border: 1px solid var(--border-light);
+    background: rgba(10, 10, 26, 0.6);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid rgba(255, 255, 255, 0.08);
     border-radius: var(--radius-xl);
     display: flex;
     flex-direction: column;
     overflow: hidden;
+    box-shadow: var(--shadow-md);
 }
 
 .analyzer-panel-header {
@@ -55,20 +58,22 @@
     width: 100%;
     resize: none;
     padding: var(--space-4);
-    background: var(--bg-primary);
+    background: rgba(5, 5, 15, 0.5);
+    backdrop-filter: blur(8px);
     border: 1px solid var(--border);
     border-radius: var(--radius-lg);
     font-family: var(--font-family);
     font-size: var(--font-size-sm);
     line-height: 1.6;
     color: var(--text-primary);
-    transition: border-color var(--transition-fast);
+    transition: all var(--transition-fast);
 }
 
 .analyzer-textarea:focus {
     outline: none;
-    border-color: var(--primary);
-    box-shadow: 0 0 0 3px var(--primary-glow);
+    border-color: var(--accent);
+    background: rgba(18, 18, 38, 0.8);
+    box-shadow: 0 0 0 3px rgba(0, 240, 255, 0.15);
 }
 
 .analyzer-controls {
@@ -90,13 +95,16 @@
 /* Results Area (Right) */
 .analyzer-results-panel {
     width: 450px;
-    background: var(--bg-card);
-    border: 1px solid var(--border-light);
+    background: rgba(10, 10, 26, 0.6);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid rgba(255, 255, 255, 0.08);
     border-radius: var(--radius-xl);
     display: flex;
     flex-direction: column;
     flex-shrink: 0;
     overflow: hidden;
+    box-shadow: var(--shadow-md);
 }
 
 .analyzer-results-body {

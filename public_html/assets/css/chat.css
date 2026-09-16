@@ -13,7 +13,9 @@
     border-right: 1px solid var(--border-light);
     display: flex;
     flex-direction: column;
-    background: var(--bg-secondary);
+    background: rgba(10, 10, 26, 0.6);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
     flex-shrink: 0;
 }
 
@@ -72,11 +74,13 @@
 }
 
 .chat-list-item:hover {
-    background: rgba(108, 92, 231, 0.08);
+    background: rgba(0, 240, 255, 0.08);
+    transform: translateX(4px);
 }
 
 .chat-list-item.active {
-    background: rgba(108, 92, 231, 0.15);
+    background: rgba(138, 43, 226, 0.15);
+    border-left: 3px solid var(--accent);
 }
 
 .chat-list-item-icon {
@@ -115,7 +119,7 @@
     flex: 1;
     display: flex;
     flex-direction: column;
-    background: var(--bg-primary);
+    background: transparent;
     min-width: 0;
 }
 
@@ -172,13 +176,17 @@
 }
 
 .chat-message.ai .chat-message-bubble {
-    background: var(--bg-card);
-    border: 1px solid var(--border-light);
+    background: rgba(18, 18, 38, 0.7);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid rgba(0, 240, 255, 0.2);
+    box-shadow: 0 4px 12px rgba(0, 240, 255, 0.05);
     color: var(--text-secondary);
 }
 
 .chat-message.user .chat-message-bubble {
-    background: var(--primary);
+    background: var(--gradient-primary);
+    box-shadow: 0 4px 15px rgba(138, 43, 226, 0.3);
     color: white;
 }
 
@@ -299,7 +307,8 @@
 }
 
 .chat-suggestion-card {
-    background: var(--bg-card);
+    background: rgba(18, 18, 38, 0.5);
+    backdrop-filter: blur(8px);
     border: 1px solid var(--border-light);
     border-radius: var(--radius-lg);
     padding: var(--space-4);
@@ -309,8 +318,10 @@
 }
 
 .chat-suggestion-card:hover {
-    border-color: var(--primary);
-    background: var(--bg-card-hover);
+    border-color: var(--accent);
+    background: rgba(26, 26, 50, 0.8);
+    box-shadow: 0 4px 15px rgba(0, 240, 255, 0.1);
+    transform: translateY(-2px);
 }
 
 .chat-suggestion-card h4 {
@@ -369,16 +380,18 @@
     display: flex;
     align-items: flex-end;
     gap: var(--space-3);
-    background: var(--bg-card);
+    background: rgba(10, 10, 26, 0.6);
+    backdrop-filter: blur(12px);
     border: 1px solid var(--border);
     border-radius: var(--radius-xl);
     padding: var(--space-2) var(--space-4);
-    transition: border-color var(--transition-fast);
+    transition: all var(--transition-fast);
 }
 
 .chat-input-container:focus-within {
-    border-color: var(--primary);
-    box-shadow: 0 0 0 3px var(--primary-glow);
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px rgba(0, 240, 255, 0.2);
+    background: rgba(18, 18, 38, 0.8);
 }
 
 .chat-input {

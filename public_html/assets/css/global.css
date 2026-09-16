@@ -10,43 +10,44 @@
    ============================================ */
 :root {
     /* Primary Colors */
-    --primary: #6C5CE7;
-    --primary-light: #A29BFE;
-    --primary-dark: #5A4BD1;
-    --primary-glow: rgba(108, 92, 231, 0.3);
+    --primary: #8a2be2; /* Deep vibrant purple */
+    --primary-light: #b366ff;
+    --primary-dark: #5c1496;
+    --primary-glow: rgba(138, 43, 226, 0.4);
 
     /* Accent Colors */
-    --accent: #00D2FF;
-    --accent-2: #FF6B6B;
-    --accent-3: #FECA57;
-    --accent-4: #00B894;
-    --accent-5: #FD79A8;
+    --accent: #00f0ff; /* Neon cyan */
+    --accent-2: #ff2a6d; /* Neon pink */
+    --accent-3: #ffd700; /* Gold */
+    --accent-4: #05ffa1; /* Neon green */
+    --accent-5: #ff007f; 
 
     /* Gradients */
-    --gradient-primary: linear-gradient(135deg, #6C5CE7, #00D2FF);
-    --gradient-hero: linear-gradient(135deg, #0c0c1d 0%, #1a1a3e 50%, #2d1b69 100%);
-    --gradient-card: linear-gradient(135deg, rgba(108,92,231,0.1), rgba(0,210,255,0.05));
-    --gradient-glow: linear-gradient(135deg, #6C5CE7, #A29BFE, #00D2FF);
+    --gradient-primary: linear-gradient(135deg, #8a2be2, #00f0ff);
+    --gradient-hero: radial-gradient(circle at top right, rgba(138,43,226,0.15) 0%, rgba(10,10,26,1) 50%), radial-gradient(circle at bottom left, rgba(0,240,255,0.1) 0%, rgba(10,10,26,1) 50%);
+    --gradient-card: linear-gradient(135deg, rgba(255,255,255,0.03) 0%, rgba(255,255,255,0.01) 100%);
+    --gradient-glow: linear-gradient(135deg, #8a2be2, #b366ff, #00f0ff);
+    --gradient-border: linear-gradient(135deg, rgba(255,255,255,0.1), rgba(255,255,255,0.02));
 
     /* Dark Theme */
-    --bg-primary: #0a0a1a;
-    --bg-secondary: #111128;
-    --bg-tertiary: #1a1a3e;
-    --bg-card: #16162e;
-    --bg-card-hover: #1e1e42;
-    --bg-input: #1a1a3e;
-    --bg-sidebar: #0d0d24;
+    --bg-primary: #05050f;
+    --bg-secondary: #0a0a1a;
+    --bg-tertiary: #121226;
+    --bg-card: rgba(18, 18, 38, 0.6);
+    --bg-card-hover: rgba(26, 26, 50, 0.8);
+    --bg-input: rgba(10, 10, 26, 0.8);
+    --bg-sidebar: rgba(10, 10, 26, 0.95);
 
     /* Text Colors */
-    --text-primary: #FFFFFF;
-    --text-secondary: #B8B8D4;
-    --text-tertiary: #7878A0;
-    --text-muted: #5a5a80;
+    --text-primary: #ffffff;
+    --text-secondary: #c8c8e6;
+    --text-tertiary: #8f8fb8;
+    --text-muted: #6b6b8f;
 
     /* Border Colors */
-    --border: rgba(108, 92, 231, 0.2);
-    --border-light: rgba(255, 255, 255, 0.06);
-    --border-focus: #6C5CE7;
+    --border: rgba(255, 255, 255, 0.08);
+    --border-light: rgba(255, 255, 255, 0.04);
+    --border-focus: #00f0ff;
 
     /* Status Colors */
     --success: #00B894;
@@ -102,12 +103,12 @@
     --radius-full: 9999px;
 
     /* Shadows */
-    --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.3);
-    --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.3);
-    --shadow-lg: 0 10px 25px rgba(0, 0, 0, 0.4);
-    --shadow-xl: 0 20px 50px rgba(0, 0, 0, 0.5);
-    --shadow-glow: 0 0 30px rgba(108, 92, 231, 0.3);
-    --shadow-glow-sm: 0 0 15px rgba(108, 92, 231, 0.2);
+    --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.4);
+    --shadow-md: 0 8px 16px rgba(0, 0, 0, 0.4);
+    --shadow-lg: 0 16px 32px rgba(0, 0, 0, 0.5);
+    --shadow-xl: 0 24px 48px rgba(0, 0, 0, 0.6);
+    --shadow-glow: 0 0 20px rgba(0, 240, 255, 0.4), 0 0 40px rgba(138, 43, 226, 0.2);
+    --shadow-glow-sm: 0 0 10px rgba(0, 240, 255, 0.3);
 
     /* Transitions */
     --transition-fast: 150ms ease;
@@ -130,6 +131,23 @@
     --z-tooltip: 700;
 }
 
+/* Glassmorphism Utilities */
+.glass-panel {
+    background: var(--bg-card);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid var(--border);
+    box-shadow: var(--shadow-md);
+}
+
+.glass-panel:hover {
+    background: var(--bg-card-hover);
+    border-color: rgba(255, 255, 255, 0.15);
+    box-shadow: var(--shadow-lg), var(--shadow-glow-sm);
+    transform: translateY(-2px);
+    transition: all var(--transition);
+}
+
 /* ============================================
    Reset & Base
    ============================================ */
@@ -148,9 +166,11 @@ html {
 
 body {
     font-family: var(--font-family);
-    background: var(--bg-primary);
+    background-color: var(--bg-primary);
+    background-image: var(--gradient-hero);
+    background-attachment: fixed;
     color: var(--text-primary);
-    line-height: 1.6;
+    line-height: 1.5;
     overflow-x: hidden;
     min-height: 100vh;
 }
@@ -318,8 +338,9 @@ p {
 /* ============================================
    Form Elements
    ============================================ */
+/* Inputs */
 .form-group {
-    margin-bottom: var(--space-5);
+    margin-bottom: var(--space-4);
 }
 
 .form-label {
@@ -343,18 +364,21 @@ p {
     font-family: var(--font-family);
     font-size: var(--font-size-sm);
     color: var(--text-primary);
-    background: var(--bg-input);
+    background: rgba(10, 10, 26, 0.5);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
     border: 1px solid var(--border);
     border-radius: var(--radius-lg);
-    transition: all var(--transition-fast);
+    transition: all var(--transition);
     outline: none;
 }
 
 .form-input:focus,
 .form-select:focus,
 .form-textarea:focus {
-    border-color: var(--primary);
-    box-shadow: 0 0 0 3px var(--primary-glow);
+    border-color: var(--accent);
+    background: rgba(18, 18, 38, 0.8);
+    box-shadow: 0 0 0 3px rgba(0, 240, 255, 0.2);
 }
 
 .form-input::placeholder {
